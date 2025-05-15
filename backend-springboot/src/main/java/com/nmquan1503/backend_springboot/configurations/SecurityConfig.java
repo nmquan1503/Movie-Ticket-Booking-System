@@ -1,6 +1,5 @@
 package com.nmquan1503.backend_springboot.configurations;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;

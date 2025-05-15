@@ -91,7 +91,8 @@ public enum ResponseCode {
     UNAUTHENTICATED (8002, "Unauthenticated."),
     UNAUTHORIZED (8003, "You don't have permission."),
 
-    PAYMENT_METHOD_DISABLED(9992, "Unsupported payment method."),
+    SCHEDULE_CONFLICT(9989, "Showtime conflicts with an existing schedule."),
+    PAYMENT_METHOD_DISABLED(9990, "Unsupported payment method."),
     PAYMENT_METHOD_MAINTENANCE(9991, "Payment method under maintenance."),
     UNPAYABLE_RESERVATION(9992, "This reservation cannot be paid."),
     RESERVATION_EXPIRED(9993, "The reservation has expired."),

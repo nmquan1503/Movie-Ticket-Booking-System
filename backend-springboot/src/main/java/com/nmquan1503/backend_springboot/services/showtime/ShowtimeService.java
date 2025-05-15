@@ -52,14 +52,15 @@ public class ShowtimeService {
 
     @PreAuthorize("hasRole('ADMIN')")
     public void createShowtime(ShowtimeCreationRequest request) {
-        if (!movieService.existsByMovieId(request.getMovieId())) {
-            throw new GeneralException(ResponseCode.MOVIE_NOT_FOUND);
-        }
         if (!roomService.existsByRoomId(request.getRoomId())) {
             throw new GeneralException(ResponseCode.ROOM_NOT_FOUND);
         }
+        Movie movie = movieService.fetchByMovieId(request.getMovieId());
+        if (showtimeRepository.isScheduleConflict(request.getRoomId(), request.getStartTime(), movie.getDuration())) {
+            throw new GeneralException(ResponseCode.SCHEDULE_CONFLICT);
+        }
         Showtime showtime = Showtime.builder()
-                .movie(Movie.builder().id(request.getMovieId()).build())
+                .movie(movie)
                 .room(Room.builder().id(request.getRoomId()).build())
                 .startTime(request.getStartTime())
                 .status(showtimeStatusService.fetchByName("AVAILABLE"))

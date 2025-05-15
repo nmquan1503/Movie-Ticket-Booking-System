@@ -126,5 +126,9 @@ public class MovieService {
         return movieRepository.existsById(movieId);
     }
 
+    public Movie fetchByMovieId(Long movieId) {
+        return movieRepository.findById(movieId)
+                .orElseThrow(() -> new GeneralException(ResponseCode.MOVIE_NOT_FOUND));
+    }
 
 }
