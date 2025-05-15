@@ -1,0 +1,40 @@
+server:
+    port: ${SERVER_PORT}
+    servlet:
+        context-path: ${SERVER_SERVLET_CONTEXT_PATH}
+
+spring:
+    profiles:
+        active: dev
+    datasource:
+        url: ${SPRING_DATASOURCE_URL}
+        username: ${SPRING_DATASOURCE_USERNAME}
+        password: ${SPRING_DATASOURCE_PASSWORD}
+    jpa:
+        hibernate:
+            ddl-auto: none
+        show-sql: true
+    redis:
+        host: ${SPRING_DATA_REDIS_HOST}
+        port: ${SPRING_DATA_REDIS_PORT}
+        timeout: 2000
+    devtools:
+        restart:
+            enabled: true
+        livereload:
+            enabled: true
+
+jwt:
+    signerKey: ${JWT_SIGNERKEY}
+    accessToken:
+        expirationTime: 900
+    refreshToken:
+        expirationTime: 2592000
+
+vnpay:
+    tmnCode: ${VNPAY_TMN_CODE}
+    secretKey: ${VNPAY_SECRET_KEY}
+    payUrl: ${VNPAY_PAY_URL}
+    returnUrl: ${VNPAY_RETURN_URL}
+    command: ${VNPAY_COMMAND}
+    version: ${VNPAY_VERSION}

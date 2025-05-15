@@ -1,0 +1,41 @@
+package com.nmquan1503.backend_springboot.controllers.product;
+
+import com.nmquan1503.backend_springboot.dtos.requests.product.BranchProductCreationRequest;
+import com.nmquan1503.backend_springboot.dtos.requests.product.BranchProductUpdateRequest;
+import com.nmquan1503.backend_springboot.dtos.responses.ApiResponse;
+import com.nmquan1503.backend_springboot.services.product.BranchProductService;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.apache.kafka.shaded.com.google.protobuf.Api;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/branch-product")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class BranchProductController {
+
+    BranchProductService branchProductService;
+
+    @PostMapping
+    ResponseEntity<ApiResponse<Void>> createBranchProduct(
+            @RequestBody BranchProductCreationRequest request
+    ) {
+        branchProductService.createBranchProduct(request);
+        ApiResponse<Void> response = ApiResponse.success(null);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PostMapping("/{branchProductId}")
+    ResponseEntity<ApiResponse<Void>> updateBranchProduct(
+            @PathVariable Short branchProductId,
+            @RequestBody BranchProductUpdateRequest request
+    ) {
+        branchProductService.updateBranchProduct(branchProductId, request);
+        ApiResponse<Void> response = ApiResponse.success(null);
+        return ResponseEntity.ok().body(response);
+    }
+
+}

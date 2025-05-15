@@ -1,0 +1,14 @@
+package com.nmquan1503.backend_springboot.repositories.showtime;
+
+import com.nmquan1503.backend_springboot.entities.showtime.Showtime;
+import com.nmquan1503.backend_springboot.repositories.showtime.custom.CustomShowtimeRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+public interface ShowtimeRepository extends JpaRepository<Showtime, Long>, CustomShowtimeRepository {
+
+    List<Showtime> findByMovieIdAndStartTimeBetween(Long movieId, LocalDateTime from, LocalDateTime to);
+
+}
