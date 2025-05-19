@@ -34,7 +34,7 @@ public class ShowtimeService {
 
     ShowtimeMapper showtimeMapper;
 
-    public List<ShowtimeOptionResponse> getShowtimeSummariesByMovieId(Long movieId) {
+    public List<ShowtimeOptionResponse> getShowtimeOptionsByMovieId(Long movieId) {
         List<Showtime> showtimes = showtimeRepository.findByMovieIdAndStartTimeBetween(
                 movieId,
                 LocalDateTime.now(),

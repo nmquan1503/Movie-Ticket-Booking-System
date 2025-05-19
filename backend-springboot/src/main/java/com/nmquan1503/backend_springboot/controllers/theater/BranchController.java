@@ -22,11 +22,21 @@ public class BranchController {
 
     BranchService branchService;
 
-    @GetMapping("/summary/province/{provinceId}")
-    ResponseEntity<ApiResponse<List<BranchOptionResponse>>> getBranchSummariesByProvinceId(
+    @GetMapping("/options/province/{provinceId}")
+    ResponseEntity<ApiResponse<List<BranchOptionResponse>>> getBranchOptionsByProvinceId(
             @PathVariable Short provinceId
     ) {
-        ApiResponse<List<BranchOptionResponse>> response = ApiResponse.success(branchService.getBranchSummariesByProvinceId(provinceId));
+        ApiResponse<List<BranchOptionResponse>> response = ApiResponse.success(
+            branchService.getBranchOptionsByProvinceId(provinceId)
+        );
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/options")
+    ResponseEntity<ApiResponse<List<BranchOptionResponse>>> getAllBranchOptions() {
+        ApiResponse<List<BranchOptionResponse>> response = ApiResponse.success(
+            branchService.getAllBranchOptions()
+        );
         return ResponseEntity.ok().body(response);
     }
 

@@ -34,4 +34,12 @@ public class WardController {
         return ResponseEntity.ok().body(response);
     }
 
+    @GetMapping("/details")
+    ResponseEntity<ApiResponse<List<WardDetailResponse>>> getAllWardDetails() {
+        ApiResponse<List<WardDetailResponse>> response = ApiResponse.success(
+            wardService.getAllWardDetails()
+        );
+        return ResponseEntity.ok().body(response);
+    }
+
 }

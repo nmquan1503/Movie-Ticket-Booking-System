@@ -24,8 +24,8 @@ public class GenderController {
     
     GenderService genderService;
 
-    @GetMapping
-    ResponseEntity<ApiResponse<List<GenderOptionResponse>>> getAllGenders() {
+    @GetMapping("/options")
+    ResponseEntity<ApiResponse<List<GenderOptionResponse>>> getAllGenderOptions() {
         ApiResponse<List<GenderOptionResponse>> response = ApiResponse.success(genderService.getAllGenderOptions());
         return ResponseEntity.ok().body(response);
     }

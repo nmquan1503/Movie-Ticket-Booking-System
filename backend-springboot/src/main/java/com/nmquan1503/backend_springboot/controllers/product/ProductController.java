@@ -40,7 +40,7 @@ public class ProductController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PostMapping("/{productId}")
+    @PutMapping("/{productId}")
     ResponseEntity<ApiResponse<Void>> updateProduct(
             @PathVariable Byte productId,
             @RequestBody ProductUpdateRequest request

@@ -173,9 +173,6 @@ public class CustomMovieRepositoryImpl implements CustomMovieRepository {
         QReservation reservation = QReservation.reservation;
         QTicket ticket = QTicket.ticket;
 
-        QMovie movieSub = new QMovie("movieSub");
-        QShowtime showtimeSub = new QShowtime("showtimeSub");
-
         NumberExpression<Long> ticketCount = ticket.count();
         NumberExpression<Long> daysSinceRelease = Expressions.numberTemplate(
                 Long.class,
@@ -189,22 +186,11 @@ public class CustomMovieRepositoryImpl implements CustomMovieRepository {
         return queryFactory
                 .select(movie)
                 .from(movie)
-                .join(movie, showtime.movie)
-                .leftJoin(showtime, reservation.showtime)
-                .leftJoin(reservation, ticket.reservation)
-                .where(movie.id.in(
-                        JPAExpressions
-                                .selectDistinct(movieSub.id)
-                                .from(movieSub)
-                                .join(movieSub, showtimeSub.movie)
-                                .where(
-                                        showtimeSub.startTime.between(
-                                                LocalDateTime.now(),
-                                                LocalDateTime.now().plusDays(14)
-                                        )
-                                )
-                ))
-                .groupBy(movie.id)
+                .join(showtime).on(showtime.movie.eq(movie))
+                .leftJoin(reservation).on(reservation.showtime.eq(showtime))
+                .leftJoin(ticket).on(ticket.reservation.eq(reservation))
+                .where(showtime.startTime.between(LocalDateTime.now(), LocalDateTime.now().plusDays(14)))
+                .groupBy(movie.id, movie.averageRating, movie.releasedDate)
                 .orderBy(score.desc())
                 .limit(limit)
                 .fetch();

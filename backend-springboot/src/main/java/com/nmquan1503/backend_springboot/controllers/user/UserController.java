@@ -42,7 +42,7 @@ public class UserController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PostMapping("/{userId}")
+    @PutMapping("/{userId}")
     ResponseEntity<ApiResponse<UserDetailResponse>> updateUser(@PathVariable Long userId, @RequestBody UserUpdateRequest request) {
         ApiResponse<UserDetailResponse> response = ApiResponse.success(userService.updateUser(userId, request));
         return ResponseEntity.ok().body(response);

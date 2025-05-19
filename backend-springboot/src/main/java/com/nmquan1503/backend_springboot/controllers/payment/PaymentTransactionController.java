@@ -1,5 +1,6 @@
 package com.nmquan1503.backend_springboot.controllers.payment;
 
+import com.nmquan1503.backend_springboot.dtos.requests.payment.PaymentTransactionCreationRequest;
 import com.nmquan1503.backend_springboot.dtos.responses.ApiResponse;
 import com.nmquan1503.backend_springboot.dtos.responses.payment.PaymentRedirectResponse;
 import com.nmquan1503.backend_springboot.exceptions.ResponseCode;
@@ -22,9 +23,12 @@ public class PaymentTransactionController {
     PaymentTransactionService paymentTransactionService;
 
     @PostMapping
-    ResponseEntity<ApiResponse<PaymentRedirectResponse>> createPayment(HttpServletRequest request) {
+    ResponseEntity<ApiResponse<PaymentRedirectResponse>> createPayment(
+        HttpServletRequest httpServletRequest, 
+        @RequestBody PaymentTransactionCreationRequest request
+    ) {
         ApiResponse<PaymentRedirectResponse> response = ApiResponse.success(
-                paymentTransactionService.processPayment(request)
+                paymentTransactionService.processPayment(httpServletRequest, request)
         );
         return ResponseEntity.ok().body(response);
     }

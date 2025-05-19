@@ -3,6 +3,7 @@ package com.nmquan1503.backend_springboot.services.payment;
 import com.nmquan1503.backend_springboot.dtos.internal.PaymentCreationRequest;
 import com.nmquan1503.backend_springboot.dtos.internal.PaymentCallbackResult;
 import com.nmquan1503.backend_springboot.dtos.internal.PaymentInitResult;
+import com.nmquan1503.backend_springboot.dtos.requests.payment.PaymentTransactionCreationRequest;
 import com.nmquan1503.backend_springboot.dtos.responses.payment.PaymentRedirectResponse;
 import com.nmquan1503.backend_springboot.entities.payment.PaymentTransaction;
 import com.nmquan1503.backend_springboot.entities.reservation.Reservation;
@@ -40,11 +41,9 @@ public class PaymentTransactionService {
         paymentTransactionRepository.save(paymentTransaction);
     }
 
-    public PaymentRedirectResponse processPayment(HttpServletRequest request) {
+    public PaymentRedirectResponse processPayment(HttpServletRequest httpServletRequest, PaymentTransactionCreationRequest request) {
         Long userId = authenticationService.getCurrentUserId();
-        Byte paymentMethodId = Byte.parseByte(request.getParameter("paymentMethodId"));
-        Long reservationId = Long.parseLong(request.getParameter("reservationId"));
-        Reservation reservation = reservationService.fetchById(reservationId);
+        Reservation reservation = reservationService.fetchById(request.getReservationId());
         if (!reservation.getUser().getId().equals(userId)) {
             throw new GeneralException(ResponseCode.UNAUTHORIZED);
         }
@@ -58,13 +57,12 @@ public class PaymentTransactionService {
             throw new GeneralException(ResponseCode.UNPAYABLE_RESERVATION);
         }
         long amount = (long) reservationService.getTotalAmountByReservation(reservation);
-        PaymentStrategy paymentStrategy = paymentStrategyFactory.getPaymentStrategy(paymentMethodId);
-        System.out.println(1);
+        PaymentStrategy paymentStrategy = paymentStrategyFactory.getPaymentStrategy(request.getPaymentMethodId());
         PaymentCreationRequest paymentCreationRequest = PaymentCreationRequest.builder()
-                .reservationId(reservationId)
+                .reservationId(request.getReservationId())
                 .amount(amount)
                 .expireTime(reservation.getEndTime())
-                .ipAddress(VnPayUtil.getIpAddress(request))
+                .ipAddress(VnPayUtil.getIpAddress(httpServletRequest))
                 .build();
         PaymentInitResult result = paymentStrategy.processPayment(paymentCreationRequest);
 

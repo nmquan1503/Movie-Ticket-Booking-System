@@ -7,7 +7,6 @@ import com.nmquan1503.backend_springboot.services.product.BranchProductService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.apache.kafka.shaded.com.google.protobuf.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +27,7 @@ public class BranchProductController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PostMapping("/{branchProductId}")
+    @PutMapping("/{branchProductId}")
     ResponseEntity<ApiResponse<Void>> updateBranchProduct(
             @PathVariable Short branchProductId,
             @RequestBody BranchProductUpdateRequest request

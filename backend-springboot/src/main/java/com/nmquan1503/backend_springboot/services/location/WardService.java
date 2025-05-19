@@ -37,4 +37,11 @@ public class WardService {
         ).toList();
     }
 
+    public List<WardDetailResponse> getAllWardDetails() {
+        List<Ward> wards = wardRepository.findAll();
+        return wards.stream().map(
+            wardMapper::toWardDetailResponse
+        ).toList();
+    }
+
 }

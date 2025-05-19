@@ -8,7 +8,6 @@ import com.nmquan1503.backend_springboot.services.showtime.ShowtimeService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.apache.kafka.shaded.com.google.protobuf.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,10 +22,12 @@ public class ShowtimeController {
     ShowtimeService showtimeService;
 
     @GetMapping("/movie/{movieId}")
-    ResponseEntity<ApiResponse<List<ShowtimeOptionResponse>>> getShowtimeSummariesByMovieId(
+    ResponseEntity<ApiResponse<List<ShowtimeOptionResponse>>> getShowtimeOptionsByMovieId(
             @PathVariable Long movieId
     ) {
-        ApiResponse<List<ShowtimeOptionResponse>> response = ApiResponse.success(showtimeService.getShowtimeSummariesByMovieId(movieId));
+        ApiResponse<List<ShowtimeOptionResponse>> response = ApiResponse.success(
+            showtimeService.getShowtimeOptionsByMovieId(movieId)
+        );
         return ResponseEntity.ok().body(response);
     }
 
@@ -39,7 +40,7 @@ public class ShowtimeController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PostMapping("/{showtimeId}")
+    @PutMapping("/{showtimeId}")
     ResponseEntity<ApiResponse<Void>> updateShowtime(
             @PathVariable Long showtimeId,
             @RequestBody ShowtimeUpdateRequest request

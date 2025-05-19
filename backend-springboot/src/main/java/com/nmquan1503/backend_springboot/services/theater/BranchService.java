@@ -22,11 +22,14 @@ public class BranchService {
     BranchMapper branchMapper;
     ProvinceMapper provinceMapper;
 
-    public List<BranchOptionResponse> getBranchSummariesByProvinceId(Short provinceId) {
+    public List<BranchOptionResponse> getBranchOptionsByProvinceId(Short provinceId) {
         List<Branch> branches = branchRepository.findAllByProvinceId(provinceId);
-        return branches.stream().map(
-                branchMapper::toBranchSummaryResponse
-        ).toList();
+        return branchMapper.toListBranchOptionResponse(branches);
+    }
+
+    public List<BranchOptionResponse> getAllBranchOptions() {
+        List<Branch> branches = branchRepository.findAll();
+        return branchMapper.toListBranchOptionResponse(branches);
     }
 
     public boolean checkAllBranchIdsExist(List<Short> branchIds) {
