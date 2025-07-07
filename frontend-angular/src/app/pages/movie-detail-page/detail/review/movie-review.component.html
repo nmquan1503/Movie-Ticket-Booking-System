@@ -1,0 +1,21 @@
+<div class="movie-review" [class.active]="isVisible">
+    <div
+        *ngFor="let review of reviews"
+        class="review-box"
+    >
+        <div class="header">
+            <div class="avatar-wrapper">
+                <img *ngIf="review.user.avatarURL" [src]="review.user.avatarURL" />
+                <img *ngIf="!review.user.avatarURL" src="/assets/images/placeholders/default-avatar.png" />
+            </div>
+            <div class="info">
+                <p class="name">{{ review.user.fullName }}</p>
+                <div class="stars">
+                    <i *ngFor="let state of starStates(review.rating)" [ngClass]="getStarClass(state)"></i>
+                </div>
+                <p class="time">{{ getTimeString(review.creationTime) }}</p>
+            </div>
+        </div>
+        <p class="comment">{{ review.comment }}</p>
+    </div>
+</div>

@@ -10,4 +10,6 @@ public interface CustomBranchRepository {
 
     boolean checkAllBranchIdsExist(List<Short> branchIds);
 
+    List<Branch> findAllByRoomTypeId(Byte roomTypeId);
+
 }

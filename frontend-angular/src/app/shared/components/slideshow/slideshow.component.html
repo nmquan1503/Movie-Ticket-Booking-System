@@ -1,0 +1,76 @@
+<div 
+    #wrapper 
+    class="wrapper" 
+    [style.width]="widthPercent+'%'" 
+    (mouseenter)="onMouseEnter()" 
+    (mousedown)="onMouseDown($event)" 
+    (mouseleave)="onMouseLeave()"
+>
+    <div 
+        class="track" 
+        [style.transform]="'translateX(' + currentOffset + 'px)'" 
+        [class.animate]="isAnimateTrack"
+        (transitionend)="onTransitionEnd()" 
+    >
+        <ng-container *ngFor="let slide of slides">
+            <a 
+                *ngIf="slide.routerLink" 
+                class="slide" 
+                [innerHTML]="slide.elementRef.nativeElement.innerHTML" 
+                [routerLink]="slide.routerLink" 
+                [style.width]="slideWidthPercent + '%'" 
+                preventClickOnDrag 
+            ></a>
+
+            <a 
+                *ngIf="!slide.routerLink && slide.href" 
+                class="slide" 
+                [innerHTML]="slide.elementRef.nativeElement.innerHTML" 
+                [href]="slide.href" 
+                target="_blank" 
+                [style.width]="slideWidthPercent + '%'" 
+                preventClickOnDrag 
+            ></a>
+
+            <a 
+                *ngIf="!slide.routerLink && !slide.href" 
+                class="slide" 
+                [innerHTML]="slide.elementRef.nativeElement.innerHTML" 
+                [style.width]="slideWidthPercent + '%'" 
+                preventClickOnDrag 
+            ></a>
+        </ng-container>
+    </div>
+    <div 
+        *ngIf="hasNavigationButtons" 
+        class="button-wrapper prev" 
+        (click)="prevSlide()" 
+        (mousedown)="stopPropagation($event)" 
+    >
+        <button>
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+    <div 
+        *ngIf="hasNavigationButtons" 
+        class="button-wrapper next" 
+        (click)="nextSlide()" 
+        (mousedown)="stopPropagation($event)" 
+    >
+        <button>
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+    <div 
+        *ngIf="hasPager" 
+        class="pager"
+    >
+        <span
+            *ngFor="let item of items; let i = index" 
+            class="dot" 
+            [class.active]="i === currentIndex - visibleCount" 
+            (click)="goToSlide(i)" 
+            (mousedown)="stopPropagation($event)" 
+        ></span>
+    </div>
+</div>

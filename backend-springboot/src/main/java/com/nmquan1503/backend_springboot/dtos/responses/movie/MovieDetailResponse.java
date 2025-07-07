@@ -2,6 +2,7 @@ package com.nmquan1503.backend_springboot.dtos.responses.movie;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,18 +17,19 @@ public class MovieDetailResponse {
     Long id;
     String title;
     String posterURL;
-    String bannerURL;
+    String backdropURL;
     String trailerURL;
+    String tagline;
     String overview;
     LocalDate releasedDate;
     Short duration;
     LanguageResponse originalLanguage;
-    LanguageResponse subtitleLanguage;
     AgeRatingDetailResponse ageRating;
     Double averageRating;
-    Integer ratingCount;
-    List<PersonPreviewResponse> actors;
-    List<PersonPreviewResponse> directors;
+    Long ratingCount;
+    Page<MovieCastResponse> cast;
+    Page<MovieCrewResponse> crew;
     List<CategoryResponse> categories;
+    Page<MovieImageResponse> images;
 
 }

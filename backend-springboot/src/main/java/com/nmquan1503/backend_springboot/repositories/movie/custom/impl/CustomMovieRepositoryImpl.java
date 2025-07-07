@@ -14,7 +14,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -29,170 +31,143 @@ public class CustomMovieRepositoryImpl implements CustomMovieRepository {
     JPAQueryFactory queryFactory;
 
     @Override
-    public List<MoviePreviewResponse> getTrendingMovieSummaries(int number) {
-//        QShowtime showtime = QShowtime.showtime;
-//        QReservation reservation = QReservation.reservation;
-//        QTicket ticket = QTicket.ticket;
-//        NumberExpression<Double> averageRatingScore = movie.averageRating;
-//        NumberExpression<Double> totalTicketsBookedScore = ticket.count().castToNum(Double.class);
-//        NumberExpression<Double> daysSinceReleaseScore = Expressions.numberTemplate(
-//                Long.class,
-//                "DATEDIFF(CURRENT_DATE, {0})",
-//                movie.releasedDate
-//        ).castToNum(Double.class);
-//
-//        NumberExpression<Double> hotScore = averageRatingScore.multiply(1)
-//                .add(totalTicketsBookedScore.multiply(1))
-//                .add(daysSinceReleaseScore.multiply(-2));
-//
-//        return queryFactory
-//                .select(Projections.constructor(
-//                        MovieSummaryResponse.class,
-//                        movie.id,
-//                        movie.title,
-//                        movie.posterURL,
-//                        Projections.constructor(
-//                                AgeRatingSummaryResponse.class,
-//                                movie.ageRating.id,
-//                                movie.ageRating.code
-//                        )
-//                ))
-//                .from(movie)
-//                .leftJoin(movie.showtimes, showtime)
-//                .leftJoin(showtime.reservations, reservation)
-//                .leftJoin(reservation.tickets, ticket)
-////                .orderBy(hotScore.desc())
-//                .limit(number)
-//                .fetch();
-        return null;
-    }
-
-    @Override
-    public List<MoviePreviewResponse> getNowShowingMovieSummaries() {
-//        QShowtime pastShowtime = new QShowtime("past");
-//        QShowtime futureShowtime = new QShowtime("future");
-//        LocalDateTime now = LocalDateTime.now();
-//        return queryFactory
-//                .selectDistinct(Projections.constructor(
-//                        MovieSummaryResponse.class,
-//                        movie.id,
-//                        movie.title,
-//                        movie.thumbnailURL,
-//                        movie.rating
-//                ))
-//                .from(movie)
-//                .where(
-//                        JPAExpressions.selectOne()
-//                                .from(pastShowtime)
-//                                .where(pastShowtime.movie.eq(movie)
-//                                        .and(pastShowtime.startTime.loe(now)))
-//                                .exists(),
-//                        JPAExpressions.selectOne()
-//                                .from(futureShowtime)
-//                                .where(futureShowtime.movie.eq(movie)
-//                                        .and(futureShowtime.startTime.after(now)))
-//                                .exists()
-//                )
-//                .fetch();
-        return null;
-    }
-
-    @Override
-    public List<MoviePreviewResponse> getComingSoonMovieSummaries() {
-//        QShowtime showtime = QShowtime.showtime;
-//        LocalDateTime now = LocalDateTime.now();
-//        return queryFactory
-//                .selectDistinct(Projections.constructor(
-//                        MovieSummaryResponse.class,
-//                        movie.id,
-//                        movie.title,
-//                        movie.thumbnailURL,
-//                        movie.rating
-//                ))
-//                .from(movie)
-//                .join(movie.showtimes, showtime)
-//                .where(showtime.startTime.after(now))
-//                .fetch();
-        return null;
-    }
-
-    @Override
-    public Page<MovieListItemResponse> findMovieCatalogs(Pageable pageable) {
-//        QCategory category = QCategory.category;
-//        QMovieCategory movieCategory = QMovieCategory.movieCategory;
-//        QAgeRating ageRating = QAgeRating.ageRating;
-//        List<MovieCatalogResponse> content = queryFactory
-//                .select(Projections.constructor(
-//                        MovieCatalogResponse.class,
-//                        movie.id,
-//                        movie.title,
-//                        movie.posterURL,
-//                        movie.releasedDate,
-//                        movie.duration,
-//                        movie.averageRating,
-//                        movie.ratingCount,
-//                        Projections.list(
-//                                Projections.constructor(
-//                                        CategorySummaryResponse.class,
-//                                        category.id,
-//                                        category.name
-//                                )
-//                        ),
-//                        Projections.constructor(
-//                                AgeRatingSummaryResponse.class,
-//                                movie.ageRating.id,
-//                                movie.ageRating.code
-//                        )
-//                ))
-//                .from(movie)
-//                .leftJoin(movie.movieCategories,movieCategory)
-//                .leftJoin(movieCategory.category, category)
-//                .offset(pageable.getOffset())
-//                .limit(pageable.getPageSize())
-//                .fetch();
-//
-//
-//
-//
-//
-//
-//        Long total = queryFactory
-//                .select(movie.count())
-//                .from(movie)
-//                .fetchOne();
-//        if (total == null) total = 0L;
-//
-//        return new PageImpl<>(content, pageable, total);
-        return null;
-    }
-
-    @Override
     public List<Movie> findTrendingMovies(int limit) {
         QMovie movie = QMovie.movie;
         QShowtime showtime = QShowtime.showtime;
-        QReservation reservation = QReservation.reservation;
-        QTicket ticket = QTicket.ticket;
-
-        NumberExpression<Long> ticketCount = ticket.count();
-        NumberExpression<Long> daysSinceRelease = Expressions.numberTemplate(
-                Long.class,
-                "DATEDIFF(CURDATE(), {0})",
-                movie.releasedDate
-        );
-        NumberExpression<Double> score = movie.averageRating.multiply(2.0)
-                .add(ticketCount.multiply(0.01))
-                .add(daysSinceRelease.multiply(-0.1));
-
+        QMovieScore movieScore = QMovieScore.movieScore;
+        List<Long> movieIds = queryFactory
+                .selectDistinct(showtime.movie.id)
+                .from(showtime)
+                .where(showtime.startTime.between(LocalDateTime.now(), LocalDateTime.now().plusDays(14)))
+                .fetch();
         return queryFactory
                 .select(movie)
                 .from(movie)
-                .join(showtime).on(showtime.movie.eq(movie))
-                .leftJoin(reservation).on(reservation.showtime.eq(showtime))
-                .leftJoin(ticket).on(ticket.reservation.eq(reservation))
-                .where(showtime.startTime.between(LocalDateTime.now(), LocalDateTime.now().plusDays(14)))
-                .groupBy(movie.id, movie.averageRating, movie.releasedDate)
-                .orderBy(score.desc())
+                .leftJoin(movieScore).on(movie.id.eq(movieScore.movie.id))
+                .where(movie.id.in(movieIds))
+                .orderBy(movieScore.finalScore.desc())
                 .limit(limit)
+                .fetch();
+    }
+
+    @Override
+    public Page<Movie> findAllSortByFinalScore(Pageable pageable) {
+        QMovie movie = QMovie.movie;
+        QMovieScore score = QMovieScore.movieScore;
+
+        List<Movie> movies = queryFactory
+                .select(movie)
+                .from(movie)
+                .join(score).on(movie.id.eq(score.movie.id))
+                .orderBy(score.finalScore.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        Long total = queryFactory
+                .select(movie.count())
+                .from(movie)
+                .fetchOne();
+        total = total == null ? 0 : total;
+
+        return new PageImpl<>(movies, pageable, total);
+    }
+
+    @Override
+    public Page<Movie> findNowShowingSortByFinalScore(Pageable pageable) {
+        QMovie movie = QMovie.movie;
+        QMovieScore movieScore = QMovieScore.movieScore;
+        QShowtime showtime = QShowtime.showtime;
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime oneMonthAgo = now.minusMonths(1);
+        LocalDateTime oneMonthLater = now.plusMonths(1);
+
+        List<Long> movieIds = queryFactory
+                .select(showtime.movie.id)
+                .from(showtime)
+                .where(showtime.startTime.between(oneMonthAgo, oneMonthLater))
+                .groupBy(showtime.movie.id)
+                .having(
+                        Expressions.numberTemplate(Long.class,
+                                "SUM(CASE WHEN {0} < {1} THEN 1 ELSE 0 END)", showtime.startTime, now
+                        ).gt(0),
+                        Expressions.numberTemplate(Long.class,
+                                "SUM(CASE WHEN {0} > {1} THEN 1 ELSE 0 END)", showtime.startTime, now
+                        ).gt(0)
+                )
+                .fetch();
+
+        List<Movie> movies = queryFactory
+                .select(movie)
+                .from(movie)
+                .join(movieScore).on(movie.id.eq(movieScore.movieId))
+                .where(movie.id.in(movieIds))
+                .orderBy(movieScore.finalScore.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+        return new PageImpl<>(movies, pageable, movieIds.size());
+    }
+
+    @Override
+    public Page<Movie> findUpComingSortByFinalScore(Pageable pageable) {
+        QMovie movie = QMovie.movie;
+        QMovieScore movieScore = QMovieScore.movieScore;
+        QShowtime showtime = QShowtime.showtime;
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime oneMonthAgo = now.minusMonths(1);
+
+        List<Long> movieIds = queryFactory
+                .select(showtime.movie.id)
+                .from(showtime)
+                .where(showtime.startTime.goe(oneMonthAgo))
+                .groupBy(showtime.movie.id)
+                .having(
+                        Expressions.numberTemplate(Long.class,
+                                "SUM(CASE WHEN {0} > {1} THEN 1 ELSE 0 END)",
+                                showtime.startTime, now
+                        ).gt(0),
+
+                        Expressions.numberTemplate(Long.class,
+                                "SUM(CASE WHEN {0} BETWEEN {1} AND {2} THEN 1 ELSE 0 END)",
+                                showtime.startTime, oneMonthAgo, now
+                        ).eq(0L)
+                )
+                .fetch();
+
+        List<Movie> movies = queryFactory
+                .select(movie)
+                .from(movie)
+                .join(movieScore).on(movieScore.movie.id.eq(movie.id))
+                .where(movie.id.in(movieIds))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(movieScore.finalScore.desc())
+                .fetch();
+        return new PageImpl<>(movies, pageable, movieIds.size());
+    }
+
+    @Override
+    public List<Movie> findAllSortByFinalScore() {
+        QMovie movie = QMovie.movie;
+        QMovieScore score = QMovieScore.movieScore;
+        return queryFactory
+                .select(movie)
+                .from(movie)
+                .join(score).on(score.movie.id.eq(movie.id))
+                .orderBy(score.finalScore.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<Long> findIdsByListIds(List<Long> ids) {
+        QMovie movie = QMovie.movie;
+        return queryFactory
+                .select(movie.id)
+                .from(movie)
+                .where(movie.id.in(ids))
                 .fetch();
     }
 }

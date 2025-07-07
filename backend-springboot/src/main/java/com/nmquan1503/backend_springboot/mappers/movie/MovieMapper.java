@@ -2,6 +2,7 @@ package com.nmquan1503.backend_springboot.mappers.movie;
 
 import com.nmquan1503.backend_springboot.dtos.requests.movie.MovieCreationRequest;
 import com.nmquan1503.backend_springboot.dtos.requests.movie.MovieUpdateRequest;
+import com.nmquan1503.backend_springboot.dtos.responses.movie.MovieBannerResponse;
 import com.nmquan1503.backend_springboot.dtos.responses.movie.MovieDetailResponse;
 import com.nmquan1503.backend_springboot.dtos.responses.movie.MoviePreviewResponse;
 import com.nmquan1503.backend_springboot.dtos.responses.movie.MovieListItemResponse;
@@ -26,5 +27,7 @@ public interface MovieMapper {
     Movie toMovie(MovieCreationRequest request);
 
     void updateMovie(@MappingTarget Movie movie, MovieUpdateRequest request);
+
+    MovieBannerResponse toMovieBannerResponse(Movie movie);
 
 }

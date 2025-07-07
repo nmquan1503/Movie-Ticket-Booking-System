@@ -1,6 +1,7 @@
 package com.nmquan1503.backend_springboot.services.theater;
 
 import com.nmquan1503.backend_springboot.dtos.responses.theater.BranchOptionResponse;
+import com.nmquan1503.backend_springboot.dtos.responses.theater.BranchSimpleResponse;
 import com.nmquan1503.backend_springboot.entities.theater.Branch;
 import com.nmquan1503.backend_springboot.mappers.location.ProvinceMapper;
 import com.nmquan1503.backend_springboot.mappers.theater.BranchMapper;
@@ -38,6 +39,12 @@ public class BranchService {
 
     public boolean existsById(Short branchId) {
         return branchRepository.existsById(branchId);
+    }
+
+    List<BranchSimpleResponse> getBranchSimplesByRoomTypeId(Byte roomTypeId) {
+        return branchMapper.toListBranchSimpleResponse(
+                branchRepository.findAllByRoomTypeId(roomTypeId)
+        );
     }
 
 }

@@ -1,0 +1,110 @@
+.movie-slideshow-section {
+    padding: 120px 0;
+}
+
+.movie-slideshow-section .content {
+    width: 80%;
+    margin: auto;
+}
+
+.movie-slideshow-section .title {
+    width: 100%;
+    text-align: center;
+    position: relative;
+    margin-bottom: 50px;
+
+    &::before {
+        content: "";
+        width: 100%;
+        height: 2px;
+        left: 0;
+        top: 40%;
+        position: absolute;
+        background-color: white;
+        z-index: 1;
+    }
+
+    &::after {
+        content: "";
+        width: 100%;
+        height: 2px;
+        left: 0;
+        bottom: 40%;
+        position: absolute;
+        background-color: white;
+    }
+
+    > h2 {
+        text-transform: uppercase;
+        position: relative;
+        font-size: 50px;
+        color: aqua;
+        font-weight: 900;
+        display: inline-block;
+        background-color: #001232;
+        z-index: 10;
+        padding: 0 5px;
+    }
+}
+
+.movie-slideshow-section .movie-card {
+    height: 100%;
+    padding: 2%;
+    position: relative;
+
+    &:hover {
+        > .poster > img {
+            transform: scale(1.1);
+        }
+        > .movie-title {
+            opacity: 1;
+        }
+    }
+}
+
+.movie-slideshow-section .poster {
+    height: 100%;
+    overflow: hidden;
+    > img {
+        height: 100%;
+        transition: transform ease 0.3s;
+    }
+}
+
+.movie-slideshow-section .age-rating {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: block;
+
+    > img {
+        width: 100%;
+    }
+}
+
+.movie-slideshow-section .movie-title {
+    position: absolute;
+    bottom: 0;
+    left: 2%;
+    padding-top: 13%;
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 96%;
+    height: 35%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-overflow: ellipsis;
+    color: aqua;
+    font-weight: bold;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.0) 0%,
+        rgba(0, 0, 0, 0.7) 20%,
+        rgba(0, 0, 0, 0.9) 30%, 
+        rgba(0, 0, 0, 1) 100%
+    );
+    opacity: 0;
+    transition: opacity ease 0.3s;
+}

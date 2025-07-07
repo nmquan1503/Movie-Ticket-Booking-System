@@ -1,0 +1,35 @@
+<div class="backdrop" [style.background-image]="'url(' + movie.backdropURL + ')'">
+    <div class="container">
+        <div class="wrapper">
+            <div class="poster-wrapper">
+                <img [src]="posterURL" class="poster"/>
+                <a *ngIf="movie.trailerURL" [href]="movie.trailerURL" class="trailer-icon">
+                    <img src="/assets/images/icons/video-button.png" />
+                </a>
+            </div>
+            <div class="content">
+                <h3 class="title">{{ movie.title }}</h3>
+                <div class="info">
+                    <span class="field">Thể loại: </span>
+                    <span class="description">{{ categoriesString }}</span>
+                </div>
+                <div class="info">
+                    <span class="field">Khởi chiếu: </span>
+                    <span class="description">{{ dayjs(movie.releasedDate).format('DD/MM/YYYY') }}</span>
+                </div>
+                <div class="info">
+                    <span class="field">Thời lượng: </span>
+                    <span class="description">{{ movie.duration + ' phút' }}</span>
+                </div>
+                <div class="info">
+                    <span class="field">Ngôn ngữ: </span>
+                    <span class="description">{{ movie.originalLanguage.name }}</span>
+                </div>
+                <div *ngIf="movie.ageRating" class="info">
+                    <span class="field">Rated: </span>
+                    <span class="description">{{ movie.ageRating.code + ' - ' + movie.ageRating.description }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

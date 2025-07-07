@@ -26,6 +26,8 @@ public class MovieCreationRequest {
 
     String trailerURL;
 
+    String tagline;
+
     String overview;
 
     @NotNull(message = "RELEASED_DATE_MOVIE_EMPTY")
@@ -37,15 +39,13 @@ public class MovieCreationRequest {
     @NotNull(message = "ORIGINAL_LANGUAGE_MOVIE_EMPTY")
     Byte originalLanguageId;
 
-    Byte subtitleLanguageId;
-
     Byte ageRatingId;
 
-    @UniqueElements(message = "DUPLICATE_ACTOR")
-    List<Long> actorIds;
+    @UniqueElements(message = "DUPLICATE_CAST_MEMBER")
+    List<MovieCastCreationRequest> cast;
 
-    @UniqueElements(message = "DUPLICATE_DIRECTOR")
-    List<Long> directorIds;
+    @UniqueElements(message = "DUPLICATE_CREW_MEMBER")
+    List<MovieCrewCreationRequest> crew;
 
     @UniqueElements(message = "DUPLICATE_CATEGORY")
     List<Byte> categoryIds;

@@ -27,11 +27,13 @@ public class Movie {
     @Column(name = "poster_url")
     String posterURL;
 
-    @Column(name = "banner_url")
-    String bannerURL;
+    @Column(name = "backdrop_url")
+    String backdropURL;
 
     @Column(name = "trailer_url")
     String trailerURL;
+
+    String tagline;
 
     String overview;
 
@@ -46,19 +48,6 @@ public class Movie {
     Language originalLanguage;
 
     @ManyToOne
-    @JoinColumn(name = "subtitle_language_id")
-    Language subtitleLanguage;
-
-    @ManyToOne
     @JoinColumn(name = "age_rating_id")
     AgeRating ageRating;
-
-    @Column(name = "average_rating")
-    @Builder.Default
-    Double averageRating = 0.0;
-
-    @Column(name = "rating_count")
-    @Builder.Default
-    Integer ratingCount = 0;
-
 }

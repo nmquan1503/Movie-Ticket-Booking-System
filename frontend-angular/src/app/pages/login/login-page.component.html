@@ -1,0 +1,28 @@
+<loading-overlay [active]="loading"></loading-overlay>
+<div class="box">
+    <div class="header">
+        <h3>Đăng nhập</h3>
+    </div>
+    <div *ngIf="notificationId" class="noti-box">
+        <p class="noti-content">{{ notifications[notificationId - 1] }}</p>
+    </div>
+    <div class="form">
+        <div class="text-input-box">
+            <label class="text-input-label" for="identifier-input">Email hoặc số điện thoại</label>
+            <input class="text-input" id="identifier-input" type="text" [(ngModel)]="identifier" placeholder="Nhập email hoặc số điện thoại của bạn" required />
+        </div>
+        <div class="text-input-box">
+            <label class="text-input-label" for="password-input">Mật khẩu</label>
+            <input class="text-input" id="password-input" type="password" [(ngModel)]="password" placeholder="Nhập mật khẩu của bạn" required />
+        </div>
+        <div class="checkgroup">
+            <input id="remember-option" type="checkbox" [(ngModel)]="isRemembered" />
+            <label for="remember-option">Lưu mật khẩu</label>
+        </div>
+        <div class="submit-button" (click)="login()">Đăng nhập</div>
+    </div>
+    <div class="redirect">
+        <span>Bạn chưa có tài khoản? </span>
+        <a [routerLink]="['/register']">Đăng ký ngay</a>
+    </div>
+</div>

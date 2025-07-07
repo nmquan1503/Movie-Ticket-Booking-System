@@ -18,11 +18,8 @@ import java.util.List;
 )
 public interface SeatMapper {
 
-    @Mapping(target = "name", expression = "java(seat.getRowLabel() + String.valueOf(seat.getColumnLabel()))")
     SeatDetailResponse toSeatDetailResponse(Seat seat);
 
     List<SeatDetailResponse> toListSeatDetailResponse(List<Seat> seats);
-
-
 
 }

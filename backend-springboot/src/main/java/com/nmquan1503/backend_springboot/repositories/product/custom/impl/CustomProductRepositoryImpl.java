@@ -1,8 +1,11 @@
 package com.nmquan1503.backend_springboot.repositories.product.custom.impl;
 
 import com.nmquan1503.backend_springboot.entities.product.Product;
+import com.nmquan1503.backend_springboot.entities.product.QBranchProduct;
 import com.nmquan1503.backend_springboot.entities.product.QProduct;
+import com.nmquan1503.backend_springboot.entities.product.QProductStatus;
 import com.nmquan1503.backend_springboot.entities.reservation.QReservationProduct;
+import com.nmquan1503.backend_springboot.entities.theater.QBranch;
 import com.nmquan1503.backend_springboot.repositories.product.custom.CustomProductRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AccessLevel;
@@ -29,6 +32,22 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
                 .from(product)
                 .join(product, reservationProduct.product)
                 .where(reservationProduct.reservation.id.eq(reservationId))
+                .fetch();
+    }
+
+    @Override
+    public List<Product> findByBranchId(Short branchId) {
+        QProduct product = QProduct.product;
+        QBranchProduct branchProduct = QBranchProduct.branchProduct;
+        QProductStatus productStatus = QProductStatus.productStatus;
+
+        return queryFactory
+                .select(product)
+                .from(product)
+                .join(branchProduct).on(branchProduct.product.id.eq(product.id))
+                .join(productStatus).on(productStatus.id.eq(branchProduct.status.id))
+                .on(branchProduct.branch.id.eq(branchId)
+                        .and(productStatus.name.eq("ACTIVE")))
                 .fetch();
     }
 }

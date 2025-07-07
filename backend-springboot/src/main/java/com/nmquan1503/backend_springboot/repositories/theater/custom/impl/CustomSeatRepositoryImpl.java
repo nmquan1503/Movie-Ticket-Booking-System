@@ -95,4 +95,17 @@ public class CustomSeatRepositoryImpl implements CustomSeatRepository {
                 .fetch();
     }
 
+    @Override
+    public List<Seat> findByReservationId(Long reservationId) {
+        QReservationSeat reservationSeat = QReservationSeat.reservationSeat;
+        QSeat seat = QSeat.seat;
+
+        return queryFactory
+                .select(seat)
+                .from(seat)
+                .join(reservationSeat).on(reservationSeat.seat.id.eq(seat.id))
+                .where(reservationSeat.reservation.id.eq(reservationId))
+                .fetch();
+    }
+
 }

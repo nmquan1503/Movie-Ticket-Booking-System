@@ -16,4 +16,5 @@ public interface CustomSeatRepository {
 
     List<Seat> findByShowtimeId(Long showtimeId);
 
+    List<Seat> findByReservationId(Long reservationId);
 }

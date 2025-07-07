@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -72,5 +73,16 @@ public class TicketService {
         return response;
     }
 
+    public List<Ticket> fetchByMovieId(Long movieId) {
+        return ticketRepository.findByReservationShowtimeMovieId(movieId);
+    }
+
+    public List<Ticket> fetchByMovieIdAndTimeWithinPeriod(Long movieId, LocalDateTime from, LocalDateTime to) {
+        return ticketRepository.findByReservationShowtimeMovieIdAndReservationStartTimeGreaterThanEqualAndReservationStartTimeLessThan(
+                movieId,
+                from,
+                to
+        );
+    }
 
 }

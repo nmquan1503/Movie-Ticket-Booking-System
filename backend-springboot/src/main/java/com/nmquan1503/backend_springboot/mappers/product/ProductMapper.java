@@ -3,6 +3,7 @@ package com.nmquan1503.backend_springboot.mappers.product;
 import com.nmquan1503.backend_springboot.dtos.requests.product.ProductCreationRequest;
 import com.nmquan1503.backend_springboot.dtos.requests.product.ProductUpdateRequest;
 import com.nmquan1503.backend_springboot.dtos.responses.product.ProductCheckoutResponse;
+import com.nmquan1503.backend_springboot.dtos.responses.product.ProductDetailResponse;
 import com.nmquan1503.backend_springboot.dtos.responses.product.ProductReservationItemResponse;
 import com.nmquan1503.backend_springboot.dtos.responses.product.ProductSimpleResponse;
 import com.nmquan1503.backend_springboot.entities.product.Product;
@@ -11,12 +12,18 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.List;
+
 @Mapper(
         componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
 public interface ProductMapper {
+
+    ProductDetailResponse toProductDetailResponse(Product product);
+
+    List<ProductDetailResponse> toListProductDetailResponse(List<Product> products);
 
     ProductCheckoutResponse toProductCheckoutResponse(Product product);
 

@@ -17,22 +17,37 @@ public class MovieUpdateRequest {
 
     String title;
     String posterURL;
-    String bannerURL;
+    String backdropURL;
     String trailerURL;
+    String tagline;
     String overview;
     LocalDate releasedDate;
     Short duration;
     Byte originalLanguageId;
-    Byte subtitleLanguageId;
     Byte ageRatingId;
 
-    @UniqueElements(message = "DUPLICATE_ACTOR")
-    List<Long> actorIds;
+    @UniqueElements(message = "DUPLICATE_CAST_MEMBER")
+    List<MovieCastCreationRequest> createCast;
 
-    @UniqueElements(message = "DUPLICATE_DIRECTOR")
-    List<Long> directorIds;
+    @UniqueElements(message = "DUPLICATE_CAST_MEMBER")
+    List<MovieCastUpdateRequest> updateCast;
+
+    @UniqueElements(message = "DUPLICATE_CAST_MEMBER")
+    List<Long> deleteCast;
+
+    @UniqueElements(message = "DUPLICATE_CREW_MEMBER")
+    List<MovieCrewCreationRequest> createCrew;
+
+    @UniqueElements(message = "DUPLICATE_CREW_MEMBER")
+    List<MovieCrewUpdateRequest> updateCrew;
+
+    @UniqueElements(message = "DUPLICATE_CREW_MEMBER")
+    List<Long> deleteCrew;
 
     @UniqueElements(message = "DUPLICATE_CATEGORY")
-    List<Byte> categoryIds;
+    List<Byte> addCategoryIds;
+
+    @UniqueElements(message = "DUPLICATE_CATEGORY")
+    List<Byte> deleteCategoryIds;
 
 }

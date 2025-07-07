@@ -19,7 +19,7 @@ public class MovieListItemResponse {
     LocalDate releasedDate;
     Short duration;
     Double averageRating;
-    Integer ratingCount;
+    Long ratingCount;
     List<CategoryResponse> categories;
     AgeRatingLabelResponse ageRating;
 

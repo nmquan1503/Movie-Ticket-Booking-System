@@ -1,0 +1,29 @@
+<div class="profile-section">
+    <div class="container">
+        <div class="wrapper">
+            <!-- <div class="navigator">
+                <span class="title">Tài khoản CGV</span>
+                <ul class="options">
+                    <li 
+                        class="option" 
+                        [class.active]="page === 1"
+                        (click)="page = 1"
+                    >
+                        <span>Thông tin tài khoản</span>
+                    </li>
+                    <li 
+                        class="option"
+                        [class.active]="page === 2" 
+                        (click)="page = 2"
+                    >
+                        <span>Lịch sử giao dịch</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="content">
+                <personal-info *ngIf="page === 1"></personal-info>
+            </div> -->
+            <personal-info *ngIf="user" [user]="user"></personal-info>
+        </div>
+    </div>
+</div>

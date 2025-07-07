@@ -1,0 +1,43 @@
+<div class="section">
+    <div class="container">
+        <div class="options">
+            <div class="option" [class.active]="movieStatus === 'all'" (click)="changeMovieStatus('all')">Tất cả phim</div>
+            <div class="option" [class.active]="movieStatus === 'now_showing'" (click)="changeMovieStatus('now_showing')">Phim đang chiếu</div>
+            <div class="option" [class.active]="movieStatus === 'coming_soon'" (click)="changeMovieStatus('coming_soon')">Phim sắp chiếu</div>
+        </div>
+        <div class="grid">
+            <a 
+                *ngFor="let movie of movies" 
+                class="movie-item" 
+                [routerLink]="['/movies/detail', movie.id]"
+            >
+                <div class="poster-wrapper">
+                    <img [src]="movie.posterURL" />
+                </div>
+                <div class="movie-metadata">
+                    <div class="title"> {{ movie.title }}</div>
+                    <div class="movie-info">
+                        <span class="field">Thể loại: </span>
+                        <span class="description">{{ getCategoriesString(movie) }}</span>
+                    </div>
+                    <div class="movie-info">
+                        <span class="field">Thời lượng: </span>
+                        <span class="description">{{ movie.duration + ' phút'}}</span>
+                    </div>
+                    <div class="movie-info">
+                        <span class="field">Khởi chiếu: </span>
+                        <span class="description">{{ dayjs(movie.releasedDate).format('DD/MM/YYYY') }}</span>
+                    </div>
+                
+                </div>
+            </a>
+        </div>
+        <div class="loading-section">
+            <div *ngIf="!isLoading && !isLastPage" class="loading-button" (click)="loadMovies()">Tải thêm</div>
+            <div *ngIf="isLoading" class="loading-icon">
+                <div class="point first"></div>
+                <div class="point second"></div>
+            </div>
+        </div>
+    </div>
+</div>

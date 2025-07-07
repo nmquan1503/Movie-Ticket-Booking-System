@@ -1,0 +1,27 @@
+<p class="title">Hình thức thanh toán</p>
+<div class="method-section">
+    <div
+        *ngFor="let method of methods"
+        class="method-wrapper"
+        [class.disable]="method.status.name !== 'ACTIVE'"
+        (click)="changeSelectedMethod(method)"
+    >
+        <div 
+            class="icon-wrapper"
+            [class.disable]="method.status.name !== 'ACTIVE'"
+            [class.active]="method.id === selectedMethod"
+        >
+            <div class="img-wrapper">
+                <img *ngIf="method.thumbnailURL" [src]="method.thumbnailURL" />
+                <img *ngIf="!method.thumbnailURL" src="/assets/images/placeholders/payment-method-default.jpg" />
+            </div>
+        </div>
+        <div class="method-info">
+            <p class="name">{{ method.name }}</p>
+            <p *ngIf="method.status.name!=='ACTIVE'" class="note">Phương thức hiện tại hiện đang bảo trì.</p>
+        </div>
+    </div>
+</div>
+<div class="button-wrapper" (click)="createPayment()">
+    <div class="process-button">Thanh toán</div>
+</div>

@@ -85,6 +85,16 @@ public class UserService {
         return userMapper.toUserDetailResponse(user);
     }
 
+    public UserPreviewResponse getMyInfoPreview() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication.getPrincipal()==null || !(authentication.getPrincipal() instanceof Number)) {
+            throw new GeneralException(ResponseCode.UNAUTHORIZED);
+        }
+        Long userId = (Long) authentication.getPrincipal();
+        User user = fetchUserById(userId);
+        return userMapper.toUserPreviewResponse(user);
+    }
+
     @PreAuthorize("#userId == authentication.principal")
     public UserDetailResponse updateUser(Long userId, UserUpdateRequest request) {
         User user = fetchUserById(userId);

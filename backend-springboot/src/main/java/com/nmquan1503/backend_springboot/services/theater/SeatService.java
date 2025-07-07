@@ -144,5 +144,9 @@ public class SeatService {
         return seatRepository.findByTicketId(ticketId);
     }
 
+    public List<Seat> fetchSeatsByReservationId(Long reservationId) {
+        return seatRepository.findByReservationId(reservationId);
+    }
+
 
 }

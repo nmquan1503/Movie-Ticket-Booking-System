@@ -1,0 +1,21 @@
+<div class="products-area">
+    <div
+        *ngFor="let product of products"
+        class="product-wrapper"
+    >
+        <div class="image-wrapper">
+            <img *ngIf="product.thumbnailURL" [src]="product.thumbnailURL" />
+            <img *ngIf="!product.thumbnailURL" src="/assets/images/placeholders/default-product.png" />
+        </div>
+        <div class="info-wrapper">
+            <p class="name">{{ product.name }}</p>
+            <p>{{ 'Giá: ' + product.price + ' đồng'}}</p>
+            <div class="quantity-box">
+                <span>Số lượng: </span>
+                <div class="count-button" (click)="decrease(product.id)">-</div>
+                <span>{{ productQuantity.get(product.id) }}</span>
+                <div class="count-button" (click)="increase(product.id)">+</div>
+            </div>
+        </div>
+    </div>
+</div>

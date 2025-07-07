@@ -1,0 +1,64 @@
+.price-section {
+    width: 100%;
+    padding-bottom: 50px;
+}
+
+.price-wrapper {
+    width: 80%;
+    padding: 30px 5%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url("/assets/images/backgrounds/movie-bg-proceed.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        background-color: #050068;
+        opacity: 0.85;
+        width: 100%;
+        height: 100%;
+    }
+}
+.field {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    color: white;
+    font-weight: 600px;
+    position: relative;
+}
+
+.spec {
+    color: aqua;
+    font-weight: 900;
+}
+
+.total {
+    padding-top: 5px;
+    margin-top: 5px;
+    border-top: 1px dashed grey;
+}
+
+.process-button {
+    position: relative;
+    font-size: 22px;
+    color: white;
+    font-weight: 900;
+    padding: 10px 20px;
+    background: linear-gradient(to right, pink, blue);
+    border-radius: 25px;
+    cursor: pointer;
+    &:hover {
+        box-shadow: 0 5px 10px rgba(106, 130, 251, 0.7);
+    }
+}

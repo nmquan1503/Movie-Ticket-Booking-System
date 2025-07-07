@@ -1,0 +1,23 @@
+.plan-section {
+    width: 100%;
+    padding: 50px 0;
+}
+
+.plan-container {
+    width: 80%;
+    margin: 0 auto;
+    overflow-x: hidden;
+    position: relative;
+    display: block;
+}
+
+.plan-wrapper {
+    position: relative;
+    display: flex;
+    width: 200%;
+    transition: transform ease 0.5s;
+}
+
+.item-wrapper {
+    width: 100%;
+}

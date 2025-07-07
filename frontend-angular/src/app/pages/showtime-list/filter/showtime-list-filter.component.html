@@ -1,0 +1,124 @@
+<div class="filter-section">
+    <ng-container *ngIf="currentProvinceId">
+        <div class="select-box">
+            <div class="icon">
+                <img src="/assets/images/icons/city.png" />
+            </div>
+            <div class="filter">
+                <span class="title">Tỉnh thành</span>
+                <div class="select-bar" [class.active]="isProvinceListOpen" (click)="toggleProvinceList()" (appClickOutside)="isProvinceListOpen=false">
+                    <span class="current-option">
+                        {{ provinces.get(currentProvinceId)?.name }}
+                    </span>
+                    <ul class="list-options" [class.active]="isProvinceListOpen">
+                        <li
+                            class="value"
+                            *ngFor = 'let province of provinceList'
+                            (click)="changeProvince(province.id); $event.stopPropagation()"
+                            [class.active]="currentProvinceId === province.id"
+                        >
+                            {{ province.name }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="select-box">
+            <div class="icon">
+                <img src="/assets/images/icons/cinema.png" />
+            </div>
+            <div class="filter">
+                <span class="title">Rạp chiếu</span>
+                <div class="select-bar" [class.active]="isBranchListOpen" (click)="toggleBranchList()" (appClickOutside)="isBranchListOpen=false">
+                    <span class="current-option">
+                        {{ branches.get(currentBranchId)?.name }}
+                    </span>
+                    <ul class="list-options" [class.active]="isBranchListOpen">
+                        <li
+                            class="value"
+                            *ngFor = 'let branch of branchList'
+                            (click)="changeBranch(branch.id); $event.stopPropagation()"
+                            [class.active]="currentBranchId === branch.id"
+                        >
+                            {{ branch.name }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="select-box">
+            <div class="icon">
+                <img src="/assets/images/icons/date.png" />
+            </div>
+            <div class="filter">
+                <span class="title">Ngày chiếu</span>
+                <div class="select-bar" [class.active]="isDateListOpen" (click)="toggleDateList()" (appClickOutside)="isDateListOpen=false">
+                    <span class="current-option">
+                        {{ currentDate }}
+                    </span>
+                    <ul class="list-options" [class.active]="isDateListOpen">
+                        <li
+                            class="value"
+                            *ngFor = 'let date of dateList'
+                            (click)="changeDate(date); $event.stopPropagation()"
+                            [class.active]="currentDate === date"
+                        >
+                            {{ date }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <!-- <div class="form-group select-box">
+        <div class="icon">
+            <img src="/assets/images/icons/cinema.png" />
+        </div>
+        <div class="filter">
+            <span class="title">Rạp chiếu</span>
+            <div class="select-bar" [class.active]="isBranchListOpen" (click)="toggleBranchList()" (appClickOutside)="isBranchListOpen=false">
+                <span class="current-option">
+                    {{ selectedBranch?.name || 'Chọn rạp chiếu' }}
+                </span>
+                <ul class="list-options" [class.active]="isBranchListOpen">
+                    <li 
+                        class="value" 
+                        (click)="selectBranch(null); $event.stopPropagation()"
+                        [class.active]="selectedBranch === null"
+                    >
+                        Chọn rạp chiếu
+                    </li>
+                    <li
+                        class="value"
+                        *ngFor = 'let branch of filteredBranches'
+                        (click)="selectBranch(branch); $event.stopPropagation()"
+                        [class.active]="selectedBranch?.name === branch.name"
+                    >
+                        {{ branch.name }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="form-group select-box">
+        <div class="icon">
+            <img src="/assets/images/icons/date.png" />
+        </div>
+        <div class="filter">
+            <span class="title">Ngày</span>
+            <div class="select-bar" [class.active]="isDatePickerOpen" (click)="toggleDatePicker()" (appClickOutside)="isDatePickerOpen=false">
+                <span class="current-option">
+                    {{ selectedDate ? (selectedDate | date: 'dd/MM/yyyy') : 'Chọn ngày' }}
+                </span>
+                <input
+                    class="hidden-date-input"
+                    matInput
+                    [matDatepicker]="picker"
+                    #dateInput
+                    (dateChange)="selectDate($event.value)"
+                />
+                <mat-datepicker #picker></mat-datepicker>
+            </div>
+        </div>
+    </div> -->
+</div>

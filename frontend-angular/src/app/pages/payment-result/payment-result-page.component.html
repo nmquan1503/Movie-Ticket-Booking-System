@@ -1,0 +1,17 @@
+<loading-overlay
+    [active]="status === 'loading'"
+></loading-overlay>
+<div class="container">
+    <div class="wrapper">
+        <p *ngIf="status === 'success'" class="content">
+            Chúc mừng bạn đã thanh toán thành công.
+        </p>
+        <p *ngIf="status === 'fail'" class="content">
+            Thanh toán thất bại.
+        </p>
+        <div>
+            <span>Quay lại </span>
+            <a class="note" [routerLink]="['/home']">Trang chủ</a>
+        </div>
+    </div>
+</div>

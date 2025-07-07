@@ -5,6 +5,8 @@ import com.nmquan1503.backend_springboot.entities.movie.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.List;
+
 @Mapper(
         componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE
@@ -12,5 +14,7 @@ import org.mapstruct.ReportingPolicy;
 public interface CategoryMapper {
 
     CategoryResponse toCategoryResponse(Category category);
+
+    List<CategoryResponse> toListCategoryResponse (List<Category> categories);
 
 }

@@ -80,6 +80,9 @@ public class PaymentTransactionService {
         }
         PaymentTransaction paymentTransaction = paymentTransactionRepository.findByTransactionId(result.getTransactionId())
                 .orElseThrow(() -> new GeneralException(ResponseCode.PAYMENT_TRANSACTION_NOT_FOUND));
+        if (paymentTransaction.getStatus().getName().equals("SUCCESS")) {
+            throw new GeneralException(ResponseCode.PAYMENT_TRANSACTION_PAID);
+        }
         paymentTransaction.setStatus(paymentTransactionStatusService.fetchByName("SUCCESS"));
         paymentTransactionRepository.save(paymentTransaction);
         reservationService.markReservationAsPaid(paymentTransaction.getReservation());

@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Repository;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -19,15 +21,17 @@ public class CustomTicketPriceRepositoryImpl implements CustomTicketPriceReposit
     JPAQueryFactory queryFactory;
 
     @Override
-    public Double findPriceByRoomTypeIdAndSeatTypeIdAndStartTime(Byte roomTypeId, Byte seatTypeId, LocalDateTime startTime) {
+    public double findCurrentTicketPrice() {
         QTicketPrice ticketPrice = QTicketPrice.ticketPrice;
-        return queryFactory
+        LocalDate today = LocalDate.now();
+        byte dayOfWeek = (byte)(today.getDayOfWeek().getValue() % 7);
+        Double price = queryFactory
                 .select(ticketPrice.price)
                 .from(ticketPrice)
-                .where(ticketPrice.seatType.id.eq(seatTypeId)
-                        .and(ticketPrice.roomType.id.eq(roomTypeId))
-                        .and(ticketPrice.timeRangeStart.loe(startTime.toLocalTime()))
-                        .and(ticketPrice.timeRangeEnd.goe(startTime.toLocalTime())))
+                .where(ticketPrice.dayOfWeek.eq(dayOfWeek)
+                        .and(ticketPrice.timeRangeStart.loe(LocalTime.now()))
+                        .and(ticketPrice.timeRangeEnd.goe(LocalTime.now())))
                 .fetchOne();
+        return price == null ? 0 : price;
     }
 }

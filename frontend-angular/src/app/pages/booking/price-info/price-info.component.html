@@ -1,0 +1,26 @@
+<div class="price-section">
+    <div class="price-wrapper">
+        <div class="field">
+            <div>
+                <span>Ghế đã chọn: </span>
+                <span class="spec">{{ choosedSeatString }}</span>
+            </div>
+            <div>{{ seatsPrice + ' đồng' }}</div>
+        </div>
+        <div
+            *ngFor="let product of listProduct"
+            class="field"
+        >
+            <div>
+                <span class="spec">{{ 'x' + productQuantity.get(product.id) + ' ' }}</span>
+                <span>{{ product.name }}</span>
+            </div>
+            <div>{{ getProductPrice(product) + ' đồng' }}</div>
+        </div>
+        <div class="field total">
+            <div>Tổng</div>
+            <div>{{ totalPrice + ' đồng' }}</div>
+        </div>
+        <div class="process-button" (click)="process()">Thanh toán</div>
+    </div>
+</div>

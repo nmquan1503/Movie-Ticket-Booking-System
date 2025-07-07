@@ -1,0 +1,80 @@
+<div class="header">
+    <div class="avatar">
+        <div class="avatar-wrapper">
+            <img *ngIf="user.avatarURL" [src]="user.avatarURL" />
+            <img *ngIf="!user.avatarURL" src="/assets/images/placeholders/default-avatar.png" />
+        </div>
+    </div>
+    <div class="name"> {{ user.fullName }}</div>
+</div>
+<div class="info-detail">
+    <div class="field-box">
+        <div class="field-showed">
+            <i class="fas fa-phone icon"></i>
+            <div class="content-wrapper">
+                <p class="content"> {{ user.phone }}</p>
+                <p class="title">Số điện thoại</p>
+            </div>
+        </div>
+        <div class="update-button">
+            <i class="fas fa-pen update-icon"></i>
+        </div>
+    </div>
+    <div class="field-box">
+        <div class="field-showed">
+            <i class="fa fa-envelope icon"></i>
+            <div class="content-wrapper">
+                <p class="content">{{ user.email }}</p>
+                <p class="title">Email</p>
+            </div>
+        </div>
+        <div class="update-button">
+            <i class="fas fa-pen update-icon"></i>
+        </div>
+    </div>
+    <div class="field-box">
+        <div class="field-showed">
+            <i class="fas fa-user icon"></i>
+            <div class="content-wrapper">
+                <p class="content"> {{ user.gender.name }}</p>
+                <p class="title">Giới tính</p>
+            </div>
+        </div>
+        <div class="update-button">
+            <i class="fas fa-pen update-icon"></i>
+        </div>
+    </div>
+    <div class="field-box">
+        <div class="field-showed">
+            <i class="fa fa-birthday-cake icon"></i>
+            <div class="content-wrapper">
+                <p class="content">{{ formattedBirthday }}</p>
+                <p class="title">Ngày sinh</p>
+            </div>
+        </div>
+        <div class="update-button">
+            <i class="fas fa-pen update-icon"></i>
+        </div>
+    </div>
+    <div class="field-box">
+        <div class="field-showed">
+            <i class="fas fa-pen" [style.color]="'transparent'"></i>
+            <div class="content-wrapper">
+                <p class="content">{{ dayjs(user.birthday).year() }}</p>
+                <p class="title">Năm sinh</p>
+            </div>
+        </div>
+    </div>
+    <div class="field-box">
+        <div class="field-showed">
+            <i class="fas fa-map-marker-alt icon"></i>
+            <div class="content-wrapper">
+                <p class="content">{{ formattedLocation }}</p>
+                <p class="title">Địa chỉ</p>
+            </div>
+        </div>
+        <div class="update-button">
+            <i class="fas fa-pen update-icon"></i>
+        </div>
+    </div>
+</div>

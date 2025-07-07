@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 public class AgeRatingDetailResponse {
 
     Byte id;
-    String name;
+    String code;
     String description;
 
 }

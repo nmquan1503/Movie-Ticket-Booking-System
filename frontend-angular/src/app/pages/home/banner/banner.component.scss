@@ -1,0 +1,172 @@
+.banner-section {
+    position: relative;
+    padding: 250px 0 316px;
+    display: block;
+
+    &::before {
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: rgba(0, 18, 50, 0.8);
+        z-index: 2;
+        content: '';
+        position: absolute;
+    }
+}
+
+.banner-background {
+    background-image: url("/assets/images/banners/banner01.jpg");
+    background-position:center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 850px;
+}
+
+.container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.banner-content {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    color: white;
+    z-index: 3;
+    position: relative;
+}
+
+.title {
+    font-size: 80px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.title-prefix {
+    display: inline;
+}
+
+@keyframes titleOptionsAnimation {
+    0% {
+        width: 0;
+    }
+    10% {
+        width: var(--width-op1);
+    }
+    40% {
+        width: var(--width-op1);
+    }
+    50% {
+        width: 0;
+    }
+    60% {
+        width: var(--width-op2);
+    }
+    90% {
+        width: var(--width-op2);
+    }
+    100% {
+        width: 0;
+    }
+}
+
+.title-options {
+
+    --width-op1: 417px;
+    --width-op2: 333px;
+
+    color: aqua;
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: top;
+    height: 1.32em;
+    animation: titleOptionsAnimation 6s ease infinite;
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #aebcb9;
+        height: 100%;
+        width: 2px;
+    }
+}
+
+@keyframes optionAnimation {
+    0%, 49.9% {
+        opacity: 1;
+    }
+    50%, 99.9% {
+        opacity: 0;
+    }
+}
+
+.title-option {
+    position: absolute;
+    white-space: nowrap;
+    display: inline-block;
+    padding: 0;
+    opacity: 0;
+    left: 0;
+    top: 0;
+    margin: 0;
+    &.op-1 {
+        animation: optionAnimation 6s infinite;
+    }
+    
+    &.op-2 {
+        animation: optionAnimation 6s infinite 3s;
+    }
+}
+
+.title-suffix {
+    display: block;
+}
+.title-description {
+    font-size: 24px;
+}
+
+
+@media (max-width: 900px) {
+    .title {
+        font-size: 60px;
+    }
+
+    .title-options {
+        --width-op1: 313px;
+        --width-op2: 250px;
+    }
+
+    .title-description {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 700px) {
+    .title {
+        font-size: 50px;
+    }
+    .title-prefix {
+        display: inline-block;
+        width: 100%;
+    }
+
+    .title-options {
+        --width-op1: 260px;
+        --width-op2: 207px;
+    }
+
+    .title-description {
+        font-size: 16px;
+    }
+
+}

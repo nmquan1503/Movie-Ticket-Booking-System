@@ -12,5 +12,6 @@ public class RoomTypeSimpleResponse {
 
     Byte id;
     String name;
+    Double extraFee;
 
 }

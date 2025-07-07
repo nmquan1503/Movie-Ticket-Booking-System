@@ -1,0 +1,50 @@
+.products-area {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 10%;
+}
+
+.product-wrapper {
+    width: 45%;
+    display: flex;
+    align-items: center;
+}
+
+.image-wrapper {
+    width: 40%;
+    &>img {
+        width: 100%;
+    }
+}
+
+.info-wrapper {
+    width: 60%;
+    padding-left: 10px;
+    color: white;
+    font-size: 18px;
+}
+
+.name {
+    font-size: 24px;
+    font-weight: 900;
+}
+.quantity-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.count-button {
+    border-radius: 50%;
+    background: linear-gradient(169deg, #5560ff 17%, #aa52a1 63%, #ff4343 100%);
+    &:hover{
+        box-shadow: 0 5px 10px rgba(106, 130, 251, 0.7);
+    }
+    cursor: pointer;
+    display: flex;
+    width: 20px;
+    height: 20px;
+    justify-content: center;
+    align-items: center;
+}

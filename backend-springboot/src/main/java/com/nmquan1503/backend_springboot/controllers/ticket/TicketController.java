@@ -2,6 +2,7 @@ package com.nmquan1503.backend_springboot.controllers.ticket;
 
 import com.nmquan1503.backend_springboot.dtos.responses.ApiResponse;
 import com.nmquan1503.backend_springboot.dtos.responses.ticket.TicketDetailResponse;
+import com.nmquan1503.backend_springboot.dtos.responses.ticket.TicketPriceResponse;
 import com.nmquan1503.backend_springboot.services.ticket.TicketService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/tickets")

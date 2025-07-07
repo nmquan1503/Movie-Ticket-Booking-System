@@ -1,0 +1,119 @@
+<div class="box">
+    <ng-container *ngIf="!success">
+        <div class="header">
+            <h3>Đăng ký</h3>
+        </div>
+        <div *ngIf="notificationId" class="noti-box">
+            <p class="noti-content">{{ notifications[notificationId - 1] }}</p>
+        </div>
+        <div class="form">
+            <div class="input-box">
+                <label class="input-label" for="name-input">Họ và tên</label>
+                <input class="text-input" id="name-input" type="text" [(ngModel)]="fullName" placeholder="Nhập họ và tên của bạn" />
+            </div>
+            <div class="input-box">
+                <label class="input-label" for="phone-input">Số điện thoại</label>
+                <input class="text-input" id="phone-input" type="text" [(ngModel)]="phone" placeholder="Nhập số điện thoại của bạn" />
+            </div>
+            <div class="input-box">
+                <label class="input-label" for="email-input">Email</label>
+                <input class="text-input" id="email-input" type="text" [(ngModel)]="email" placeholder="Nhập email của bạn" />
+            </div>
+            <div class="input-box">
+                <label class="input-label" for="password-input">Mật khẩu</label>
+                <input class="text-input" id="password-input" type="text" [(ngModel)]="password" placeholder="Nhập mật khẩu của bạn" />
+            </div>
+            <div class="input-box-wrapper">
+                <div class="input-box" [style.width]="'75%'">
+                    <span class="input-label">Ngày sinh</span>
+                    <div class="date-box">
+                        <select [(ngModel)]="birthday_day" (ngModelChange)="birthday_day = +$event" class="option-box">
+                            <option [value]="0">Chọn ngày</option>
+                            <option *ngFor="let i of days" [value]="i">{{ i }}</option>
+                        </select>
+                        <select [(ngModel)]="birthday_month" (ngModelChange)="birthday_month = +$event" class="option-box">
+                            <option [value]="0">Chọn tháng</option>
+                            <option *ngFor="let i of months" [value]="i">{{ i }}</option>
+                        </select>
+                        <select [(ngModel)]="birthday_year" (ngModelChange)="birthday_year = +$event" class="option-box">
+                            <option [value]="0">Chọn năm</option>
+                            <option *ngFor="let i of years" [value]="i">{{ i }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-box" [style.width]="'25%'">
+                    <label class="input-label">Giới tính</label>
+                    <select [(ngModel)]="genderId" (ngModelChange)="genderId = +$event" class="option-box">
+                        <option [value]="0">Chọn giới tính</option>
+                        <option *ngFor="let gender of genders" [value]="gender.id">{{ gender.name }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-box">
+                <label class="input-label" for="province-input">Tỉnh thành</label>
+                <select [(ngModel)]="provinceId" (ngModelChange)="provinceId = +$event; districtId = 0" class="option-box">
+                    <option [value]="0">Chọn tỉnh thành</option>
+                    <option
+                        *ngFor="let province of listProvince" 
+                        [value]="province.id"
+                    >
+                        {{ province.name }}
+                    </option>
+                </select>
+            </div>
+            <div *ngIf="provinceId" class="input-box">
+                <label class="input-label" for="district-input">Quận / huyện</label>
+                <select [(ngModel)]="districtId" (ngModelChange)="districtId = +$event; wardId = 0" class="option-box">
+                    <option [value]="0">Chọn quận / huyện</option>
+                    <option
+                        *ngFor="let district of listDistrict" 
+                        [value]="district.id"
+                    >
+                        {{ district.name }}
+                    </option>
+                </select>
+            </div>
+            <div *ngIf="districtId" class="input-box">
+                <label class="input-label" for="ward-input">Xã / phường</label>
+                <select [(ngModel)]="wardId" (ngModelChange)="wardId = +$event" class="option-box">
+                    <option [value]="0">Chọn xã / phường</option>
+                    <option
+                        *ngFor="let ward of listWard" 
+                        [value]="ward.id"
+                    >
+                        {{ ward.name }}
+                    </option>
+                </select>
+            </div>
+            <div class="input-box">
+                <label class="input-label" for="specific-address-input">Địa chỉ cụ thể</label>
+                <input class="text-input" id="specific-address-input" type="text" [(ngModel)]="specificAddress" placeholder="Nhập địa chỉ cụ thể của bạn" />
+            </div>
+            <div class="checkgroup">
+                <input id="policy_1" type="checkbox" [(ngModel)]="policy1" />
+                <label for="policy_1">Bằng việc bấm nút “Đăng Ký” bên dưới. Tôi đồng ý cho phép CGV Việt Nam thực hiện xử lý dữ liệu cá nhân của tôi phù hợp với mục đích mà CGV Việt Nam đã thông báo tại Chính Sách Bảo Mật.</label>
+            </div>
+            <div class="checkgroup">
+                <input id="policy_2" type="checkbox" [(ngModel)]="policy2" />
+                <label for="policy_2">Thông tin cá nhân cung cấp tại đây là chính xác và trùng khớp với thông tin tại CMND/CCCD/Thẻ Căn cước và/hoặc Giấy khai sinh (Giấy tờ tùy thân). Email cung cấp tại đây là chính xác và thuộc quyền quản lý duy nhất của tôi.</label>
+            </div>
+            <div class="checkgroup">
+                <input id="policy_3" type="checkbox" [(ngModel)]="policy3" />
+                <label for="policy_3">Xác nhận email chính xác và ngày sinh khớp với thông tin trên CMND/CCCD. Nếu không trùng khớp, các thông tin này sẽ không được hỗ trợ cập nhật thay đổi và có thể không được hưởng các Quyền lợi thành viên.</label>
+            </div>
+            <div class="checkgroup">
+                <input id="policy_4" type="checkbox" [(ngModel)]="policy4" />
+                <label for="policy_4">Tôi đồng ý với Điều khoản sử dụng của CGV</label>
+            </div>
+            <div class="submit-button" (click)="register()">Đăng ký</div>
+        </div>
+        <div class="redirect">
+            <span>Bạn đã có tài khoản? </span>
+            <a [routerLink]="['/login']">Đăng nhập ngay</a>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="success">
+        <span class="title">Chúc mừng bạn đã đăng ký thành công.</span>
+        <a class="redirect-link" [routerLink]="['/login']">Đăng nhập ngay</a>
+    </ng-container>
+</div>

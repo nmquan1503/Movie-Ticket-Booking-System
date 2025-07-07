@@ -21,18 +21,13 @@ public class TicketPrice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "seat_type_id", nullable = false)
-    SeatType seatType;
+    @Column(name = "day_of_week", nullable = false)
+    Byte dayOfWeek;
 
-    @ManyToOne
-    @JoinColumn(name = "room_type_id", nullable = false)
-    RoomType roomType;
-
-    @Column(name = "time_range_start")
+    @Column(name = "time_range_start", nullable = false)
     LocalTime timeRangeStart;
 
-    @Column(name = "time_range_end")
+    @Column(name = "time_range_end", nullable = false)
     LocalTime timeRangeEnd;
 
     @Column(nullable = false)

@@ -1,6 +1,7 @@
 package com.nmquan1503.backend_springboot.mappers.theater;
 
 import com.nmquan1503.backend_springboot.dtos.responses.theater.BranchOptionResponse;
+import com.nmquan1503.backend_springboot.dtos.responses.theater.BranchSimpleResponse;
 import com.nmquan1503.backend_springboot.entities.theater.Branch;
 import com.nmquan1503.backend_springboot.mappers.location.ProvinceMapper;
 
@@ -20,6 +21,10 @@ public interface BranchMapper {
     @Mapping(source = "ward.district.province", target = "province")
     BranchOptionResponse toBranchOptionResponse(Branch branch);
 
+    BranchSimpleResponse toBranchSimpleResponse(Branch branch);
+
     List<BranchOptionResponse> toListBranchOptionResponse(List<Branch> branches);
+
+    List<BranchSimpleResponse> toListBranchSimpleResponse(List<Branch> branches);
 
 }

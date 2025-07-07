@@ -1,0 +1,93 @@
+.header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.avatar {
+    width: 25%;
+    aspect-ratio: 1 / 1;
+    border: 1px solid gray;
+    border-radius: 50%;
+    padding: 20px;
+}
+
+.avatar-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    border: 3px solid aqua;
+    overflow: hidden;
+    align-content: center;
+
+    & >img {
+        width: 100%;
+    }
+}
+
+.name {
+    font-size: 70px;
+    font-weight: 900;
+    color: white;
+}
+
+.info-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 50px;
+}
+
+.field-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.field-showed {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.update-button {
+    width: 35px;
+    height: 35px;
+    background-color: gray;
+    border-radius: 50%;
+    align-content: center;
+    text-align: center;
+    cursor: pointer;
+    transition: backgroud-color ease 0.2s;
+    &:hover {
+        background-color: aqua;
+    }
+}
+
+.update-icon {
+    font-size: 17px;
+    color: white;
+}
+
+.icon {
+    color: grey;
+    font-size: 20px;
+}
+
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.content {
+    font-size: 20px;
+    color: white;
+}
+
+.title {
+    font-size: 14px;
+    color: grey;
+}

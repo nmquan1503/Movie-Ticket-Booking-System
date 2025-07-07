@@ -29,7 +29,11 @@ public class SecurityConfig {
             "/payment-transactions/callback",
             "/movie-reviews/**",
             "/showtimes/**",
-            "/branches/**"
+            "/branches/**",
+            "/room-types/**",
+            "/movie-cast/**",
+            "/movie-crew/**",
+            "/movie-images/**"
     };
 
     static String[] PUBLIC_POST_ENDPOINTS = {
@@ -50,6 +54,7 @@ public class SecurityConfig {
                                 .anyRequest().authenticated()
                 );
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
+        httpSecurity.cors(withDefaults -> {});
         return httpSecurity.build();
     }
 

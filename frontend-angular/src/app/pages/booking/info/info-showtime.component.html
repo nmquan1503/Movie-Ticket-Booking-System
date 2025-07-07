@@ -1,0 +1,9 @@
+<div class="info-section">
+    <div class="navigate-button" [class.disable]="pageNumber === 1" (click)="changePage(pageNumber - 1)">Quay lại</div>
+    <div class="info-wrapper">
+        <p class="type">{{ showtime.room.type.name }}</p>
+        <p class="location">{{ showtime.room.branch.name + ' | ' + showtime.room.name }}</p>
+        <p class="time">{{ dayjs(showtime.startTime).format('HH:mm, DD/MM/YYYY') }}</p>
+    </div>
+    <div class="navigate-button" [class.disable]="pageNumber === 2" (click)="changePage(pageNumber + 1)">Tiếp theo</div>
+</div>

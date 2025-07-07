@@ -1,0 +1,66 @@
+<div class="header-section" [class.active]="isHeaderActive">
+    <div class="container">
+        <div class="header-wrapper">
+            <div class="logo">
+                <a [routerLink]="['/home']">
+                    <img src="assets/images/logos/cgvlogo.png" alt="logo">
+                </a>
+            </div>
+            <ul class="menu" [class.active]="isMenuActive">
+                <li class="menu-item" [class.opened]="isItemOpened[0]" (click)="toggleItem(0)">
+                    <a [routerLink]="['/movies']">Phim</a>
+                    <ul class="submenu">
+                        <li><a [routerLink]="['/movies']" [queryParams]="{ status: 'now_showing' }">Phim đang chiếu</a></li>
+                        <li><a [routerLink]="['/movies']" [queryParams]="{ status: 'coming_soon' }">Phim sắp chiếu</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item" [class.opened]="isItemOpened[1]" (click)="toggleItem(1)">
+                    <a [routerLink]="['/']">Rạp CGV</a>
+                    <ul class="submenu">
+                        <li><a [routerLink]="['/']">Tất cả các rạp</a></li>
+                        <li><a [routerLink]="['/']">Rạp đặc biệt</a></li>
+                        <li><a [routerLink]="['/']">Rạp 3D</a></li>
+                    </ul>
+                </li>
+                <!-- <li class="menu-item" [class.opened]="isItemOpened[2]" (click)="toggleItem(2)">
+                    <a [routerLink]="['/']">Thành viên</a>
+                    <ul class="submenu">
+                        <li><a [routerLink]="['/']">Tài khoản CGV</a></li>
+                        <li><a [routerLink]="['/']">Quyền lợi</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item" [class.opened]="isItemOpened[3]" (click)="toggleItem(3)">
+                    <a [routerLink]="['/']">CULTUREPLEX</a>
+                    <ul class="submenu">
+                        <li><a [routerLink]="['/']">Quầy Online</a></li>
+                        <li><a [routerLink]="['/']">Thuê rạp & vé nhóm</a></li>
+                        <li><a [routerLink]="['/']">E-CGV</a></li>
+                        <li><a [routerLink]="['/']">CGV EGift</a></li>
+                        <li><a [routerLink]="['/']">CGV Rules</a></li>
+                    </ul>
+                </li> -->
+                <li *ngIf="!user" class="login-signup-btn">
+                    <a [routerLink]="['/login']">Đăng nhập</a>
+                </li>
+                <li *ngIf="user" class="menu-item" [class.active]="isItemOpened[4]" (click)="toggleItem(4)">
+                    <a class="spec" [routerLink]="['/profile']">
+                        <div class="img-wrapper">
+                            <img *ngIf="user.avatarURL" [src]="user.avatarURL" />
+                            <img *ngIf="!user.avatarURL" src="/assets/images/placeholders/default-avatar.png" />
+                        </div>
+                    </a>
+                    <ul class="submenu">
+                        <li><a [routerLink]="['/profile']">Hồ sơ</a></li>
+                        <li><a [style.cursor]="'pointer'" (click)="logout()" >Đăng xuất</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="overlay" [class.active]="isOverlayActive" (click)="closeMenu()"></div>
+            <div class="hamburger-btn" [class.active]="isMenuActive" (click)="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+</div>

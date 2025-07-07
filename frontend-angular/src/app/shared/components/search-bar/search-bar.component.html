@@ -1,0 +1,97 @@
+<section class="search-bar-section">
+    <div class="container">
+        <div class="intro">
+            <h3>CGV hân hạnh chào đón bạn!</h3>
+            <h1>Tìm ngay bộ phim yêu thích và tận hưởng trải nghiệm điện ảnh đỉnh cao.</h1>
+        </div>
+        <div class="filters">
+            <div class="form-group search-input">
+                <input type="text" placeholder="Tìm kiếm phim">
+                <button type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="form-group select-box">
+                <div class="icon">
+                    <img src="/assets/images/icons/city.png" />
+                </div>
+                <div class="filter">
+                    <span class="title">Tỉnh thành</span>
+                    <div class="select-bar" [class.active]="isProvinceListOpen" (click)="toggleProvinceList()" (appClickOutside)="isProvinceListOpen=false">
+                        <span class="current-option">
+                            {{ selectedProvince?.name || 'Chọn tỉnh thành' }}
+                        </span>
+                        <ul class="list-options" [class.active]="isProvinceListOpen">
+                            <li 
+                                class="value" 
+                                (click)="selectProvince(null); $event.stopPropagation()"
+                                [class.active]="selectedProvince === null"
+                            >
+                                Chọn tỉnh thành
+                            </li>
+                            <li
+                                class="value"
+                                *ngFor = 'let province of provinces'
+                                (click)="selectProvince(province); $event.stopPropagation()"
+                                [class.active]="selectedProvince?.name === province.name"
+                            >
+                                {{ province.name }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group select-box">
+                <div class="icon">
+                    <img src="/assets/images/icons/cinema.png" />
+                </div>
+                <div class="filter">
+                    <span class="title">Rạp chiếu</span>
+                    <div class="select-bar" [class.active]="isBranchListOpen" (click)="toggleBranchList()" (appClickOutside)="isBranchListOpen=false">
+                        <span class="current-option">
+                            {{ selectedBranch?.name || 'Chọn rạp chiếu' }}
+                        </span>
+                        <ul class="list-options" [class.active]="isBranchListOpen">
+                            <li 
+                                class="value" 
+                                (click)="selectBranch(null); $event.stopPropagation()"
+                                [class.active]="selectedBranch === null"
+                            >
+                                Chọn rạp chiếu
+                            </li>
+                            <li
+                                class="value"
+                                *ngFor = 'let branch of filteredBranches'
+                                (click)="selectBranch(branch); $event.stopPropagation()"
+                                [class.active]="selectedBranch?.name === branch.name"
+                            >
+                                {{ branch.name }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group select-box">
+                <div class="icon">
+                    <img src="/assets/images/icons/date.png" />
+                </div>
+                <div class="filter">
+                    <span class="title">Ngày</span>
+                    <div class="select-bar" [class.active]="isDatePickerOpen" (click)="toggleDatePicker()" (appClickOutside)="isDatePickerOpen=false">
+                        <span class="current-option">
+                            {{ selectedDate ? (selectedDate | date: 'dd/MM/yyyy') : 'Chọn ngày' }}
+                        </span>
+                        <input
+                            class="hidden-date-input"
+                            matInput
+                            [matDatepicker]="picker"
+                            #dateInput
+                            (dateChange)="selectDate($event.value)"
+                        />
+                        <mat-datepicker #picker></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

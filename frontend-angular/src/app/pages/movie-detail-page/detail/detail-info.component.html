@@ -1,0 +1,8 @@
+<div class="detail-info-section">
+    <div class="menu">
+        <div class="tab-button" [class.active]="tab === 'summary'" (click)="changeTab('summary')" >Tổng quan phim</div>
+        <div class="tab-button" [class.active]="tab === 'review'" (click)="changeTab('review')" >Đánh giá phim</div>
+    </div>
+    <movie-summary [isVisible]="tab === 'summary'" [movie]="movie"></movie-summary>
+    <movie-review [isVisible]="tab === 'review'" [movie]="movie"></movie-review>
+</div>

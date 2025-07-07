@@ -24,11 +24,8 @@ public class Seat {
     @JoinColumn(name = "room_id", nullable = false)
     Room room;
 
-    @Column(name = "row_label", nullable = false)
-    Character rowLabel;
-
-    @Column(name = "column_label", nullable = false)
-    Byte columnLabel;
+    @Column(nullable = false)
+    String name;
 
     @Column(name = "x_position", nullable = false)
     Byte positionX;

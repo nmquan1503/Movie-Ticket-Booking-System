@@ -12,5 +12,6 @@ public class SeatTypeResponse {
 
     Byte id;
     String name;
+    Double extraFee;
 
 }

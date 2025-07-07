@@ -1,0 +1,28 @@
+.photos-section {
+    width: 100%;
+    padding-left: 10%;
+    padding-right: 10%;
+    margin-top: 120px;
+    
+    .header {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 20px;
+    }
+
+    .title {
+        font-size: 24px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: white;
+    }
+
+    .image-wrapper {
+        padding: 0 5px;
+        & >img {
+            border-radius: 8px;
+            width: 100%;
+            height: auto;
+        }
+    }
+}

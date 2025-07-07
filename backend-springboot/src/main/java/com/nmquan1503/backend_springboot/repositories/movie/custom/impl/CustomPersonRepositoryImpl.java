@@ -18,23 +18,4 @@ public class CustomPersonRepositoryImpl implements CustomPersonRepository {
 
     JPAQueryFactory queryFactory;
 
-    @Override
-    public List<Person> findActorsByMovieId(Long movieId) {
-        QMovieActor movieActor = QMovieActor.movieActor;
-        return queryFactory
-                .select(movieActor.actor)
-                .from(movieActor)
-                .where(movieActor.movie.id.eq(movieId))
-                .fetch();
-    }
-
-    @Override
-    public List<Person> findDirectorsByMovieId(Long movieId) {
-        QMovieDirector movieDirector = QMovieDirector.movieDirector;
-        return queryFactory
-                .select(movieDirector.director)
-                .from(movieDirector)
-                .where(movieDirector.movie.id.eq(movieId))
-                .fetch();
-    }
 }

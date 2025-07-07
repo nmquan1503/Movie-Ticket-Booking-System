@@ -3,6 +3,7 @@ package com.nmquan1503.backend_springboot.controllers.movie;
 import com.nmquan1503.backend_springboot.dtos.requests.movie.MovieCreationRequest;
 import com.nmquan1503.backend_springboot.dtos.requests.movie.MovieUpdateRequest;
 import com.nmquan1503.backend_springboot.dtos.responses.ApiResponse;
+import com.nmquan1503.backend_springboot.dtos.responses.movie.MovieBannerResponse;
 import com.nmquan1503.backend_springboot.dtos.responses.movie.MovieListItemResponse;
 import com.nmquan1503.backend_springboot.dtos.responses.movie.MovieDetailResponse;
 import com.nmquan1503.backend_springboot.dtos.responses.movie.MoviePreviewResponse;
@@ -31,12 +32,32 @@ public class MovieController {
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping("/list")
+    @GetMapping("/list/all")
     ResponseEntity<ApiResponse<Page<MovieListItemResponse>>> getMovieListItems(
             Pageable pageable
     ) {
         ApiResponse<Page<MovieListItemResponse>> response = ApiResponse.success(
                 movieService.getMovieListItems(pageable)
+        );
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/list/now-showing")
+    ResponseEntity<ApiResponse<Page<MovieListItemResponse>>> getNowShowingMovieListItems(
+            Pageable pageable
+    ) {
+        ApiResponse<Page<MovieListItemResponse>> response = ApiResponse.success(
+                movieService.getNowShowingMovieListItems(pageable)
+        );
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/list/upcoming")
+    ResponseEntity<ApiResponse<Page<MovieListItemResponse>>> getUpComingMovieListItem(
+            Pageable pageable
+    ) {
+        ApiResponse<Page<MovieListItemResponse>> response = ApiResponse.success(
+                movieService.getUpComingMovieListItems(pageable)
         );
         return ResponseEntity.ok().body(response);
     }
@@ -52,11 +73,10 @@ public class MovieController {
     }
 
     @PostMapping
-    ResponseEntity<ApiResponse<Void>> createMovie(
+    ResponseEntity<ApiResponse<MovieDetailResponse>> createMovie(
             @RequestBody MovieCreationRequest request
     ) {
-        movieService.createMovie(request);
-        ApiResponse<Void> response = ApiResponse.success(null);
+        ApiResponse<MovieDetailResponse> response = ApiResponse.success(movieService.createMovie(request));
         return ResponseEntity.ok().body(response);
     }
 
@@ -67,6 +87,16 @@ public class MovieController {
     ) {
         ApiResponse<MovieDetailResponse> response = ApiResponse.success(
                 movieService.updateMovie(movieId, request)
+        );
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/banner/{movieId}")
+    ResponseEntity<ApiResponse<MovieBannerResponse>> getMovieBanner(
+            @PathVariable Long movieId
+    ) {
+        ApiResponse<MovieBannerResponse> response = ApiResponse.success(
+                movieService.getMovieBanner(movieId)
         );
         return ResponseEntity.ok().body(response);
     }

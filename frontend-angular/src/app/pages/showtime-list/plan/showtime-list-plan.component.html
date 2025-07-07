@@ -1,0 +1,17 @@
+<div class="plan-section">
+    <div *ngFor="let type of typeList" class="type-box">
+        <span class="type">{{ type.name }}</span>
+        <div class="showtime-box">
+            <a 
+                *ngFor="let showtime of getShowtimeList(type.id)" 
+                class="showtime-item"
+                [routerLink]="['/booking', showtime.id]"
+            >
+                <img class="showtime-item-background" src="/assets/images/icons/movie-seat.png" />
+                <span class="showtime-item-content">
+                    {{ 'P' + showtime.room.name + ' - ' + dayjs(showtime.startTime).format('HH:mm') }}
+                </span>
+            </a>
+        </div>
+    </div>
+</div>

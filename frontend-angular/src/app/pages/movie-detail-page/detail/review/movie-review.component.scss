@@ -1,0 +1,50 @@
+.movie-review {
+    display: none;
+    padding-top: 20px;
+    &.active {
+        display: block;
+    }
+}
+
+.review-box {
+    width: 100%;
+    border-bottom: 1px grey dashed;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.avatar-wrapper {
+    width: 50px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    border: 3px solid aqua;
+    overflow: hidden;
+
+    & >img {
+        width: 100%;
+    }
+}
+
+.name {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.stars {
+    color: orangered;
+    font-size: 14px;
+}
+
+.time {
+    color: gray;
+}
+
+.comment {
+    color: whitesmoke;
+    margin-left: 70px;
+}

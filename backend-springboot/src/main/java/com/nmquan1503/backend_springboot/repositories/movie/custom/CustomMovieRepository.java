@@ -10,14 +10,16 @@ import java.util.List;
 
 public interface CustomMovieRepository {
 
-    List<MoviePreviewResponse> getTrendingMovieSummaries(int number);
-
-    List<MoviePreviewResponse> getNowShowingMovieSummaries();
-
-    List<MoviePreviewResponse> getComingSoonMovieSummaries();
-
-    Page<MovieListItemResponse> findMovieCatalogs(Pageable pageable);
-
     List<Movie> findTrendingMovies(int limit);
+
+    Page<Movie> findAllSortByFinalScore(Pageable pageable);
+
+    Page<Movie> findNowShowingSortByFinalScore(Pageable pageable);
+
+    Page<Movie> findUpComingSortByFinalScore(Pageable pageable);
+
+    List<Movie> findAllSortByFinalScore();
+
+    List<Long> findIdsByListIds(List<Long> ids);
 
 }

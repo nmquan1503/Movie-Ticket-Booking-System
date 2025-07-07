@@ -6,8 +6,4 @@ import java.util.List;
 
 public interface CustomPersonRepository {
 
-    List<Person> findActorsByMovieId(Long movieId);
-
-    List<Person> findDirectorsByMovieId(Long movieId);
-
 }

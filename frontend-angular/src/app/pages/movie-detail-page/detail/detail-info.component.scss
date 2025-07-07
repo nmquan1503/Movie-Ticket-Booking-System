@@ -1,0 +1,32 @@
+.detail-info-section {
+    width: 100%;
+    margin-top: 50px;
+    padding-left: 10%;
+    padding-right: 10%;
+    margin-bottom: 50px;
+}
+
+.menu {
+    display: flex;
+    border-top: 1px solid #11326f;
+    border-bottom: 1px solid #11326f;
+}
+
+.tab-button {
+    color: white;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 20px 20px;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    transition: color ease 0.2s, border ease 0.2s;
+    cursor: pointer;
+
+    &.active {
+        color: aqua;
+        border-top: 3px solid aqua;
+        border-bottom: 3px solid aqua;
+    }
+    
+}

@@ -1,5 +1,6 @@
 package com.nmquan1503.backend_springboot.services.movie;
 
+import com.nmquan1503.backend_springboot.dtos.internal.MovieReviewStats;
 import com.nmquan1503.backend_springboot.dtos.requests.movie.MovieReviewCreationRequest;
 import com.nmquan1503.backend_springboot.dtos.requests.movie.MovieReviewUpdateRequest;
 import com.nmquan1503.backend_springboot.dtos.responses.movie.MovieReviewResponse;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +30,6 @@ import java.time.LocalDateTime;
 public class MovieReviewService {
 
     MovieReviewRepository movieReviewRepository;
-    MovieService movieService;
     AuthenticationService authenticationService;
 
     MovieReviewMapper movieReviewMapper;
@@ -44,7 +46,6 @@ public class MovieReviewService {
         movieReview.setUser(User.builder().id(userId).build());
         movieReview.setMovie(Movie.builder().id(request.getMovieId()).build());
         movieReview = movieReviewRepository.save(movieReview);
-        movieService.updateRatingAfterCreateReview(movieReview);
         return movieReviewMapper.toMovieReviewSummaryResponse(movieReview);
     }
 
@@ -59,7 +60,6 @@ public class MovieReviewService {
         movieReviewMapper.updateReview(newReview, request);
         newReview.setCreationTime(LocalDateTime.now());
         movieReviewRepository.save(newReview);
-        movieService.updateRatingAfterUpdateReview(oldReview, newReview);
         return movieReviewMapper.toMovieReviewSummaryResponse(newReview);
     }
 
@@ -70,13 +70,28 @@ public class MovieReviewService {
         if (!userId.equals(review.getUser().getId())) {
             throw new GeneralException(ResponseCode.UNAUTHORIZED);
         }
-        movieService.updateRatingAfterDeleteReview(review);
         movieReviewRepository.delete(review);
     }
 
     public MovieReview fetchMovieReviewById(Long movieReviewId) {
         return movieReviewRepository.findById(movieReviewId)
                 .orElseThrow(() -> new GeneralException(ResponseCode.MOVIE_REVIEW_NOT_FOUND));
+    }
+
+    public MovieReviewStats getStatsByMovieId(Long movieId) {
+        return movieReviewRepository.findMovieReviewStatsByMovieId(movieId);
+    }
+
+    public Map<Long, MovieReviewStats> getMapStatsByMovieIds(List<Long> movieIds) {
+        return movieReviewRepository.findListMovieReviewsStatsByMovieIds(movieIds);
+    }
+
+    public List<MovieReview> fetchByMovieId(Long movieId) {
+        return movieReviewRepository.findByMovieId(movieId);
+    }
+
+    public List<MovieReview> fetchMovieReviewWithinPeriod(Long movieId, LocalDateTime from, LocalDateTime to) {
+        return movieReviewRepository.findByMovieIdAndCreationTimeGreaterThanEqualAndCreationTimeLessThan(movieId, from, to);
     }
 
 }

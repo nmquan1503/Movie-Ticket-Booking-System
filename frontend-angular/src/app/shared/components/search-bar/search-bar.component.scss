@@ -1,0 +1,241 @@
+.search-bar-section {
+    position: relative;
+    margin-top: -150px;
+    z-index: 9;
+}
+
+.container {
+    position: relative;
+    width: 80%;
+    margin: 0 auto;
+    background-image: url("/assets/images/backgrounds/ticket-bg01.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 40px 5%;
+
+    &::before {
+        content: "";
+        background: linear-gradient(0deg, #0f5ae0 0%, #7400ba 100%);
+        position: absolute;
+        opacity: 0.8;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+}
+
+.intro {
+    position: relative;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 700px;
+
+    >h3 {
+        color: aqua;
+    }
+
+    >h1 {
+        color: white;
+    }
+}
+
+.filters {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    padding: 30px;
+    margin-top: 50px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    box-shadow: 0px 5px 20px 10px rgba(44, 41, 157, 1);
+    
+    &::before {
+        content: "";
+        position: absolute;
+        background-color: black;
+        opacity: 0.4;
+        width: 100%;
+        height: calc(100% + 1px);
+        top: 0;
+        left: 0;
+    }
+}
+
+.form-group {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.search-input {
+    width: 25%;
+
+    >input {
+        width: 100%;
+        height: 45px;
+        border: none;
+        outline: none;
+        border-bottom: 1px solid grey;
+        background: transparent;
+    }
+
+    >button {
+        position: absolute;
+        right: 0;
+        margin-top: auto;
+        margin-bottom: auto;
+        outline: none;
+        background: none;
+        border: none;
+        color: grey;
+        height: 45px;
+        width: 45px;
+        text-align: right;
+        line-height: 45px;
+        cursor: pointer;
+    }
+}
+
+.select-box {
+    width: 20%;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+    margin-right: 10px;
+
+    >img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+.filter {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+}
+
+.title {
+    color: aqua;
+    font-size: 16px;
+}
+
+.select-bar {
+    position: relative;
+    cursor: pointer;
+    font-size: 14px;
+
+    padding-right: 15px;
+
+    &::after {
+        content: "\f107";
+        font-family: "Font Awesome 5 Free";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%) rotate(0deg);
+        right: 5px;
+        display: inline-block;
+        color: white;
+        font-weight: 900;
+        transition: transform 0.15s ease;
+    }
+
+    &.active::after {
+        transform: translateY(-50%) rotate(180deg);
+    }
+}
+
+.current-option {
+    color: whitesmoke;
+}
+
+.list-options {
+    position: absolute;
+    overflow: hidden;
+    overflow-y: scroll;
+    max-height: 200px;
+    width: 110%;
+    color: black;
+    font-size: 13px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 0 1px rgba(68, 68, 68, 0.11);
+    box-sizing: border-box;
+    margin-top: 4px;
+    right: 0;
+    top: 130%;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.7) translateY(-30%);
+    transition: transform 0.2s ease, opacity ease 0.2s;
+
+    &.active {
+        opacity: 1;
+        pointer-events: auto;
+        transform: scale(1) translateY(0);
+    }
+
+    &::-webkit-scrollbar {
+        width: 3px;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: white;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: linear-gradient(#642bff, #ff22e6);
+    }
+}
+
+.value {
+    padding: 0 10%;
+    min-height: 35px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover {
+        background-color: gainsboro;
+    }
+    
+    &.active {
+        font-weight: bold;
+    }
+}
+
+.hidden-date-input {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 100%;
+}
+
+::ng-deep .mat-datepicker-content {
+    background-color: white !important;
+    border-radius: 8px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8) !important;
+}
+
+::ng-deep .mat-calendar-body-selected {
+  background: linear-gradient(135deg, #642bff, #ff22e6);
+  color: #002;
+  font-weight: bold;
+  border-radius: 50%;
+}
+
+::ng-deep .mat-calendar-body-active {
+  border-radius: 50%;
+}

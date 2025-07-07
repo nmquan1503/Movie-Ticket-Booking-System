@@ -54,6 +54,14 @@ public class UserController {
         return ResponseEntity.ok().body(response);
     }
 
+    @GetMapping("/myInfo/preview")
+    ResponseEntity<ApiResponse<UserPreviewResponse>> getMyInfoPreview() {
+        ApiResponse<UserPreviewResponse> response = ApiResponse.success(
+                userService.getMyInfoPreview()
+        );
+        return ResponseEntity.ok().body(response);
+    }
+
     @GetMapping("/previews")
     ResponseEntity<ApiResponse<Page<UserPreviewResponse>>> getUserPreviews(
             Pageable pageable

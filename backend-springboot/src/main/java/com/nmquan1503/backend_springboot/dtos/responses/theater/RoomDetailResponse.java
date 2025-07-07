@@ -12,6 +12,8 @@ public class RoomDetailResponse {
 
     Integer id;
     String name;
+    Byte rowCount;
+    Byte columnCount;
     BranchOptionResponse branch;
     RoomTypeSimpleResponse type;
     RoomStatusResponse status;

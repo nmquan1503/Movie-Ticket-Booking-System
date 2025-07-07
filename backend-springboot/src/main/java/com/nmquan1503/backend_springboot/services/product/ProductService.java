@@ -29,18 +29,8 @@ public class ProductService {
     ProductMapper productMapper;
 
     public List<ProductDetailResponse> getProductDetailsByBranchId(Short branchId) {
-//        List<ProductPrice> productPrices = productPriceRepository.findByBranchId(branchId);
-//        Map<Product, List<ProductPrice>> maps = productPrices.stream()
-//                .collect(Collectors.groupingBy(ProductPrice::getProduct));
-//
-//        return maps.entrySet().stream().map(
-//                entry -> ProductDetailResponse.builder()
-//                        .id(entry.getKey().getId())
-//                        .name(entry.getKey().getName())
-//                        .variants(entry.getValue().stream().map(productPriceMapper::toProductPriceSummaryResponse).toList())
-//                        .build()
-//        ).toList();
-        return null;
+        List<Product> products = productRepository.findByBranchId(branchId);
+        return productMapper.toListProductDetailResponse(products);
     }
 
     public List<Product> fetchByIds(List<Byte> ids) {

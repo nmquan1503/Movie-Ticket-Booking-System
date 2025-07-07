@@ -2,6 +2,7 @@ package com.nmquan1503.backend_springboot.services.showtime;
 
 import com.nmquan1503.backend_springboot.dtos.requests.showtime.ShowtimeCreationRequest;
 import com.nmquan1503.backend_springboot.dtos.requests.showtime.ShowtimeUpdateRequest;
+import com.nmquan1503.backend_springboot.dtos.responses.showtime.ShowtimeDetailResponse;
 import com.nmquan1503.backend_springboot.dtos.responses.showtime.ShowtimeOptionResponse;
 import com.nmquan1503.backend_springboot.entities.movie.Movie;
 import com.nmquan1503.backend_springboot.entities.showtime.Showtime;
@@ -33,6 +34,10 @@ public class ShowtimeService {
     ShowtimeStatusService showtimeStatusService;
 
     ShowtimeMapper showtimeMapper;
+
+    public ShowtimeDetailResponse getShowtimeDetail(Long showtimeId) {
+        return showtimeMapper.toShowtimeDetailResponse(fetchById(showtimeId));
+    }
 
     public List<ShowtimeOptionResponse> getShowtimeOptionsByMovieId(Long movieId) {
         List<Showtime> showtimes = showtimeRepository.findByMovieIdAndStartTimeBetween(
@@ -76,6 +81,18 @@ public class ShowtimeService {
         }
         showtime.setStatus(showtimeStatusService.fetchById(request.getShowtimeStatusId()));
         showtimeRepository.save(showtime);
+    }
+
+    public List<Showtime> fetchUpcomingShowtimeByMovieId(Long movieId) {
+        return showtimeRepository.findByMovieIdAndStartTimeGreaterThanEqual(movieId, LocalDateTime.now());
+    }
+
+    public List<Showtime> fetchByMovieIdAndStartTimeGreaterThanEqual(Long movieId, LocalDateTime from) {
+        return showtimeRepository.findByMovieIdAndStartTimeGreaterThanEqual(movieId, from);
+    }
+
+    public List<Showtime> fetchByMovieIdAndStartTimeWithinPeriod(Long movieId, LocalDateTime from, LocalDateTime to) {
+        return showtimeRepository.findByMovieIdAndStartTimeGreaterThanEqualAndStartTimeLessThan(movieId, from, to);
     }
 
 }

@@ -1,0 +1,11 @@
+.promo-slider-section {
+    padding-top: 120px;
+}
+
+::ng-deep img {
+    display: block;
+    width: 100%;
+    height: auto;
+    -webkit-user-drag: none;
+}
+

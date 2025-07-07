@@ -22,15 +22,15 @@ public class PersonService {
 
     PersonMapper personMapper;
 
-    List<PersonPreviewResponse> getActorPreviewsByMovieId(Long movieId) {
-        return personRepository.findActorsByMovieId(movieId)
-                .stream().map(personMapper::toPersonPreviewResponse).toList();
-    }
-
-    List<PersonPreviewResponse> getDirectorPreviewsByMovieId(Long movieId) {
-        return personRepository.findDirectorsByMovieId(movieId)
-                .stream().map(personMapper::toPersonPreviewResponse).toList();
-    }
+//    List<PersonPreviewResponse> getActorPreviewsByMovieId(Long movieId) {
+//        return personRepository.findActorsByMovieId(movieId)
+//                .stream().map(personMapper::toPersonPreviewResponse).toList();
+//    }
+//
+//    List<PersonPreviewResponse> getDirectorPreviewsByMovieId(Long movieId) {
+//        return personRepository.findDirectorsByMovieId(movieId)
+//                .stream().map(personMapper::toPersonPreviewResponse).toList();
+//    }
 
     List<PersonPreviewResponse> getPersonPreviewsByIds(List<Long> personIds) {
         List<Person> people = getPersonByIds(personIds);
@@ -48,6 +48,10 @@ public class PersonService {
             throw new GeneralException(ResponseCode.PERSON_NOT_FOUND);
         }
         return people;
+    }
+
+    public boolean allUniquePersonIdsExist(List<Long> ids) {
+        return personRepository.countByIdIn(ids) == ids.size();
     }
 
 }

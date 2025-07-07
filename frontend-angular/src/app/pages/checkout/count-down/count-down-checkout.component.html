@@ -1,0 +1,7 @@
+<div class="count-down-section">
+    <ng-container *ngIf="remainingTime">
+        <p>Thời gian còn lại</p>
+        <p>{{ remainingTime }}</p>
+    </ng-container>
+    <p *ngIf="!remainingTime">Đã hết thời gian</p>
+</div>

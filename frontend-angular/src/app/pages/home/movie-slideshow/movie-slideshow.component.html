@@ -1,0 +1,28 @@
+<div class="movie-slideshow-section">
+    <div class="container">
+        <div class="content">
+            <div class="title">
+                <h2>Movie Selection</h2>
+            </div>
+            <app-slideshow
+                [visibleCount]="4"  
+                [hasNavigationButtons]="true"
+            >
+                <app-slide-item
+                    *ngFor="let movie of movies" 
+                    [href]="'www.google.com'"
+                >
+                    <div class="movie-card">
+                        <div class="poster" >
+                            <img [src]="movie.posterURL" >
+                        </div>
+                        <div class="age-rating">
+                            <img [src]="getLinkBackgroundAgeRating(movie)">
+                        </div>
+                        <div class="movie-title">{{ movie.title }}</div>
+                    </div>
+                </app-slide-item>
+            </app-slideshow>
+        </div>
+    </div>
+</div>

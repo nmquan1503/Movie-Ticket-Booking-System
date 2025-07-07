@@ -14,6 +14,7 @@ import com.nmquan1503.backend_springboot.exceptions.GeneralException;
 import com.nmquan1503.backend_springboot.exceptions.ResponseCode;
 import com.nmquan1503.backend_springboot.mappers.product.ProductMapper;
 import com.nmquan1503.backend_springboot.mappers.reservation.ReservationMapper;
+import com.nmquan1503.backend_springboot.mappers.reservation.ReservationProductMapper;
 import com.nmquan1503.backend_springboot.mappers.theater.SeatMapper;
 import com.nmquan1503.backend_springboot.repositories.reservation.ReservationRepository;
 import com.nmquan1503.backend_springboot.services.authentication.AuthenticationService;
@@ -57,6 +58,7 @@ public class ReservationService {
     ReservationMapper reservationMapper;
     SeatMapper seatMapper;
     ProductMapper productMapper;
+    ReservationProductMapper reservationProductMapper;
 
     EntityManager entityManager;
 
@@ -71,7 +73,7 @@ public class ReservationService {
         return (int)(showtimeId % 50);
     }
 
-    public ReservationDetailResponse createReservation(ReservationCreationRequest request) {
+    public Long createReservation(ReservationCreationRequest request) {
         int index = hash(request.getShowtimeId());
         ReentrantLock lock = locks.computeIfAbsent(index, id -> new ReentrantLock());
 
@@ -90,7 +92,7 @@ public class ReservationService {
     }
 
     @Transactional
-    private ReservationDetailResponse processCreateReservation(ReservationCreationRequest request) {
+    private Long processCreateReservation(ReservationCreationRequest request) {
         Long userId = authenticationService.getCurrentUserId();
 //            Long userId = (long)3;
 
@@ -101,9 +103,6 @@ public class ReservationService {
 
         List<Seat> seats = seatService.fetchByIds(request.getSeatIds());
         Set<Long> lockedSeatIds = seatService.getLockedSeatsByShowtimeId(request.getShowtimeId());
-        for (long i:lockedSeatIds) {
-            System.out.println(i);
-        }
         for (Seat seat : seats) {
             if (!seat.getRoom().getId().equals(showtime.getRoom().getId())) {
                 throw new GeneralException(ResponseCode.SEAT_NOT_FOUND);
@@ -126,15 +125,17 @@ public class ReservationService {
         reservation = reservationRepository.save(reservation);
 
         reservationSeatService.save(reservation, seats);
-
-        ReservationDetailResponse response = reservationMapper.toReservationDetailResponse(reservation);
-        response.setSeats(seatMapper.toListSeatDetailResponse(seats));
+//
+//        ReservationDetailResponse response = reservationMapper.toReservationDetailResponse(reservation);
+//        response.setSeats(seatMapper.toListSeatDetailResponse(seats));
+//
+//        response.setTicketPrice(ticketPriceService.getTotalTicketPrice(reservation));
 
         if (request.getProductOrders() != null) {
             List<Byte> productIds = request.getProductOrders().stream().map(
                     ProductOrderRequest::getProductId
             ).toList();
-            List<Product> products = productService.fetchByIds(productIds);
+//            List<Product> products = productService.fetchByIds(productIds);
             if (!branchProductService.existsByBranchIdAndProductIds(
                     showtime.getRoom().getBranch().getId(),
                     productIds
@@ -143,23 +144,23 @@ public class ReservationService {
             }
 
             reservationProductService.save(reservation, request.getProductOrders());
-
-            List<ProductReservationItemResponse> items = new ArrayList<>();
-            for (Product product : products) {
-                for (ProductOrderRequest productOrder : request.getProductOrders()) {
-                    if (product.getId().equals(productOrder.getProductId())) {
-                        items.add(ProductReservationItemResponse.builder()
-                                .product(productMapper.toProductCheckoutResponse(product))
-                                .quantity(productOrder.getQuantity())
-                                .build()
-                        );
-                    }
-                }
-            }
-            response.setItems(items);
+//
+//            List<ProductReservationItemResponse> items = new ArrayList<>();
+//            for (Product product : products) {
+//                for (ProductOrderRequest productOrder : request.getProductOrders()) {
+//                    if (product.getId().equals(productOrder.getProductId())) {
+//                        items.add(ProductReservationItemResponse.builder()
+//                                .product(productMapper.toProductCheckoutResponse(product))
+//                                .quantity(productOrder.getQuantity())
+//                                .build()
+//                        );
+//                    }
+//                }
+//            }
+//            response.setItems(items);
         }
 
-        return response;
+        return reservation.getId();
     }
 
     public Reservation fetchById(Long reservationId) {
@@ -184,6 +185,19 @@ public class ReservationService {
     public void markReservationAsPaid(Reservation reservation) {
         reservation.setStatus(reservationStatusService.fetchByName("PAID"));
         reservationRepository.save(reservation);
+    }
+
+    public ReservationDetailResponse getReservationDetail(Long reservationId) {
+        Long userId = authenticationService.getCurrentUserId();
+        Reservation reservation = reservationRepository.findByIdAndUserId(reservationId, userId)
+                .orElseThrow(() -> new GeneralException(ResponseCode.RESERVATION_NOT_FOUND));
+        ReservationDetailResponse response = reservationMapper.toReservationDetailResponse(reservation);
+        List<Seat> seats = seatService.fetchSeatsByReservationId(reservationId);
+        response.setSeats(seatMapper.toListSeatDetailResponse(seats));
+        List<ReservationProduct> reservationProducts = reservationProductService.fetchByReservationId(reservationId);
+        response.setItems(reservationProductMapper.toListProductReservationItemResponse(reservationProducts));
+        response.setTicketPrice(ticketPriceService.getTotalTicketPrice(reservation));
+        return response;
     }
 
 

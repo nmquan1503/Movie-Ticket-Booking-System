@@ -8,10 +8,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/reservations")
@@ -22,11 +19,21 @@ public class ReservationController {
     ReservationService reservationService;
 
     @PostMapping
-    ResponseEntity<ApiResponse<ReservationDetailResponse>> createReservation(
+    ResponseEntity<ApiResponse<Long>> createReservation(
             @RequestBody ReservationCreationRequest request
     ) {
-        ApiResponse<ReservationDetailResponse> response = ApiResponse.success(
+        ApiResponse<Long> response = ApiResponse.success(
                 reservationService.createReservation(request)
+        );
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/detail/{reservationId}")
+    ResponseEntity<ApiResponse<ReservationDetailResponse>> getReservationDetail(
+            @PathVariable Long reservationId
+    ) {
+        ApiResponse<ReservationDetailResponse> response = ApiResponse.success(
+                reservationService.getReservationDetail(reservationId)
         );
         return ResponseEntity.ok().body(response);
     }

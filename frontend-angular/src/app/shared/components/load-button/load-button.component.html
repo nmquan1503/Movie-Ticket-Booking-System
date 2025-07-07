@@ -1,0 +1,7 @@
+<div class="loading-section">
+    <div *ngIf="!isLoading && !isLastPage" class="loading-button" (click)="action()">Tải thêm</div>
+    <div *ngIf="isLoading" class="loading-icon">
+        <div class="point first"></div>
+        <div class="point second"></div>
+    </div>
+</div>

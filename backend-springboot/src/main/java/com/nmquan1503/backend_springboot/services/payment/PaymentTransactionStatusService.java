@@ -16,7 +16,7 @@ public class PaymentTransactionStatusService {
 
     PaymentTransactionStatusRepository paymentTransactionStatusRepository;
 
-    PaymentTransactionStatus fetchByName(String name) {
+    public PaymentTransactionStatus fetchByName(String name) {
         return paymentTransactionStatusRepository.findByName(name)
                 .orElseThrow(() -> new GeneralException(ResponseCode.PAYMENT_TRANSACTION_STATUS_NOT_FOUND));
     }

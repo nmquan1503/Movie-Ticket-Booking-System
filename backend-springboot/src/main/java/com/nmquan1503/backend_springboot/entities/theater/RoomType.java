@@ -24,8 +24,16 @@ public class RoomType {
     @Column(nullable = false)
     String name;
 
+    @Column(name = "extra_fee", nullable = false)
+    Double extraFee;
+
     @Column(name = "icon_url")
     String iconURL;
+
+    String slogan;
+
+    @Column(name = "thumbnail_url")
+    String thumbnailURL;
 
     String overview;
 

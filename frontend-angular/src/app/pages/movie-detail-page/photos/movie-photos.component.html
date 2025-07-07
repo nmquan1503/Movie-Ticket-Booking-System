@@ -1,0 +1,18 @@
+<div class="photos-section">
+    <div class="header">
+        <h3 class="title">Hình ảnh</h3>
+        <load-button [isLoading]="isLoading" [isLastPage]="isLastPage" [action]="loadImages.bind(this)"></load-button>
+    </div>
+    <app-slideshow
+        [visibleCount]="3" 
+        [hasNavigationButtons]="true"
+    >
+        <app-slide-item
+            *ngFor="let image of images"
+        >
+            <div class="image-wrapper">
+                <img [src]="image.imageURL" />
+            </div>
+        </app-slide-item>
+    </app-slideshow>
+</div>

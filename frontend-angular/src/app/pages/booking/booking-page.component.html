@@ -1,0 +1,40 @@
+<showtime-list-banner
+    *ngIf="showtime"
+    [movie]="showtime.movie"
+></showtime-list-banner>
+<info-showtime
+    *ngIf="showtime"
+    [showtime]="showtime"
+    [pageNumber]="pageNumber" 
+    (pageChange)="changePage($event)" 
+>
+</info-showtime>
+<div class="plan-section">
+    <div class="plan-container">
+        <div class="plan-wrapper" [style.transform]="'translateX(-' + ((pageNumber - 1) * 50) + '%)'">
+            <div class="item-wrapper">
+                <seat-plan
+                    *ngIf="seats"
+                    [seats]="seats"
+                    [choosedSeats]="choosedSeats"
+                    [rowCount]="showtime.room.rowCount"
+                    [columnCount]="showtime.room.columnCount"
+                ></seat-plan>
+            </div>
+            <div class="item-wrapper">
+                <product-plan
+                    *ngIf="products"
+                    [products]="products"
+                    [productQuantity]="productQuantity"
+                ></product-plan>
+            </div>
+        </div>
+    </div>
+</div>
+<price-info
+    *ngIf="showtime && choosedSeats && productQuantity && productMap"
+    [choosedSeats]="choosedSeats"
+    [productQuantity]="productQuantity"
+    [productMap]="productMap"
+    [showtime]="showtime"
+></price-info>

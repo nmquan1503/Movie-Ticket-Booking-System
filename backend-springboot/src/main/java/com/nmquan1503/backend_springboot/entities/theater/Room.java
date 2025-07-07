@@ -27,6 +27,12 @@ public class Room {
     @Column(nullable = false)
     String name;
 
+    @Column(name = "row_count", nullable = false)
+    Byte rowCount;
+
+    @Column(name = "column_count", nullable = false)
+    Byte columnCount;
+
     @ManyToOne
     @JoinColumn(name = "room_type_id", nullable = false)
     RoomType type;

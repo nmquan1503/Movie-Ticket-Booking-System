@@ -1,0 +1,21 @@
+.container {
+    width: 100%;
+}
+
+.wrapper {
+    width: 80%;
+    margin: 50px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.method-list-wrapper {
+    width: 60%;
+    background-color: #032055;
+    padding: 30px 50px;
+}
+.info-wrapper {
+    width: 35%;
+    background-color: #032055;
+    padding: 30px;
+}

@@ -46,4 +46,8 @@ public class CategoryService {
         return categories;
     }
 
+    public boolean allUniqueCategoryIdsExist(List<Byte> categoryIds) {
+        return categoryRepository.countByIdIn(categoryIds) == categoryIds.size();
+    }
+
 }

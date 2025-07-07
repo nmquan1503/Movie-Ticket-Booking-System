@@ -1,0 +1,26 @@
+<showtime-list-banner
+    *ngIf="reservation"
+    [movie]="reservation.showtime.movie"
+></showtime-list-banner>
+<count-down-checkout
+    *ngIf="reservation"
+    [endTime]="reservation.endTime"
+></count-down-checkout>
+<div class="container">
+    <div class="wrapper">
+        <div class="method-list-wrapper">
+            <method-list
+                *ngIf="methods && reservation"
+                [methods]="methods"
+                [reservation]="reservation"
+            >
+            </method-list>
+        </div>
+        <div class="info-wrapper">
+            <reservation-info
+                *ngIf="reservation"
+                [reservation]="reservation"
+            ></reservation-info>
+        </div>
+    </div>
+</div>

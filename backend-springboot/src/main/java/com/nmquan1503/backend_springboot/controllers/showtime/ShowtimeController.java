@@ -3,6 +3,7 @@ package com.nmquan1503.backend_springboot.controllers.showtime;
 import com.nmquan1503.backend_springboot.dtos.requests.showtime.ShowtimeCreationRequest;
 import com.nmquan1503.backend_springboot.dtos.requests.showtime.ShowtimeUpdateRequest;
 import com.nmquan1503.backend_springboot.dtos.responses.ApiResponse;
+import com.nmquan1503.backend_springboot.dtos.responses.showtime.ShowtimeDetailResponse;
 import com.nmquan1503.backend_springboot.dtos.responses.showtime.ShowtimeOptionResponse;
 import com.nmquan1503.backend_springboot.services.showtime.ShowtimeService;
 import lombok.AccessLevel;
@@ -47,6 +48,16 @@ public class ShowtimeController {
     ) {
         showtimeService.updateShowtime(showtimeId, request);
         ApiResponse<Void> response = ApiResponse.success(null);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/detail/{showtimeId}")
+    ResponseEntity<ApiResponse<ShowtimeDetailResponse>> getShowtimeDetail(
+            @PathVariable Long showtimeId
+    ) {
+        ApiResponse<ShowtimeDetailResponse> response = ApiResponse.success(
+                showtimeService.getShowtimeDetail(showtimeId)
+        );
         return ResponseEntity.ok().body(response);
     }
 

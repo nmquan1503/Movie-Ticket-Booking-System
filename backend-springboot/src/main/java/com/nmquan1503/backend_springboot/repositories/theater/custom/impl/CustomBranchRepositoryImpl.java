@@ -2,6 +2,7 @@ package com.nmquan1503.backend_springboot.repositories.theater.custom.impl;
 
 import com.nmquan1503.backend_springboot.entities.theater.Branch;
 import com.nmquan1503.backend_springboot.entities.theater.QBranch;
+import com.nmquan1503.backend_springboot.entities.theater.QRoom;
 import com.nmquan1503.backend_springboot.repositories.theater.custom.CustomBranchRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AccessLevel;
@@ -36,6 +37,18 @@ public class CustomBranchRepositoryImpl implements CustomBranchRepository {
                 .where(branch.id.in(branchIds))
                 .fetchOne();
         return count != null && count == branchIds.size();
+    }
+
+    @Override
+    public List<Branch> findAllByRoomTypeId(Byte roomTypeId) {
+        QBranch branch = QBranch.branch;
+        QRoom room = QRoom.room;
+        return queryFactory
+                .select(branch)
+                .from(branch)
+                .join(room.branch, branch)
+                .where(room.type.id.eq(roomTypeId))
+                .fetch();
     }
 
 }

@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface CustomProductRepository {
     List<Product> findByReservationId(Long reservationId);
+    List<Product> findByBranchId(Short branchId);
 }

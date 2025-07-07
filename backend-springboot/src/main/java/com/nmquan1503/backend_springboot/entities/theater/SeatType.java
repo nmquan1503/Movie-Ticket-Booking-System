@@ -23,4 +23,7 @@ public class SeatType {
     @Column(nullable = false)
     String name;
 
+    @Column(name = "extra_fee", nullable = false)
+    Double extraFee;
+
 }

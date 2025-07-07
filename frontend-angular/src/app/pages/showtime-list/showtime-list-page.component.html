@@ -1,0 +1,23 @@
+<showtime-list-banner
+    *ngIf="movie"
+    [movie]="movie"
+></showtime-list-banner>
+<showtime-list-filter
+    [provinces]="provinces"
+    [branches]="branches" 
+    [showtimeMap]="showtimeMap" 
+    [currentProvinceId]="currentProvinceId" 
+    [currentBranchId]="currentBranchId" 
+    [currentDate]="currentDate"
+    (provinceChange)="changeProvince($event)"
+    (branchChange)="changeBranch($event)"
+    (dateChange)="changeDate($event)"
+>
+</showtime-list-filter>
+<showtime-list-plan
+    [showtimeMap]="showtimeMap"
+    [types]="types" 
+    [currentProvinceId]="currentProvinceId" 
+    [currentBranchId]="currentBranchId" 
+    [currentDate]="currentDate"
+></showtime-list-plan>

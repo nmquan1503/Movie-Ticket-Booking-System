@@ -1,24 +1,29 @@
 package com.nmquan1503.backend_springboot.services.movie;
 
+import com.nmquan1503.backend_springboot.dtos.internal.MovieReviewStats;
 import com.nmquan1503.backend_springboot.dtos.requests.movie.MovieCreationRequest;
 import com.nmquan1503.backend_springboot.dtos.requests.movie.MovieUpdateRequest;
 import com.nmquan1503.backend_springboot.dtos.responses.movie.*;
+import com.nmquan1503.backend_springboot.entities.movie.Category;
 import com.nmquan1503.backend_springboot.entities.movie.Movie;
-import com.nmquan1503.backend_springboot.entities.movie.MovieReview;
 import com.nmquan1503.backend_springboot.exceptions.GeneralException;
 import com.nmquan1503.backend_springboot.exceptions.ResponseCode;
+import com.nmquan1503.backend_springboot.mappers.movie.CategoryMapper;
 import com.nmquan1503.backend_springboot.mappers.movie.MovieMapper;
 import com.nmquan1503.backend_springboot.repositories.movie.MovieRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -26,15 +31,17 @@ import java.util.List;
 public class MovieService {
 
     MovieRepository movieRepository;
-    PersonService personService;
     CategoryService categoryService;
     LanguageService languageService;
     AgeRatingService ageRatingService;
     MovieCategoryService movieCategoryService;
-    MovieActorService movieActorService;
-    MovieDirectorService movieDirectorService;
+    MovieCastService movieCastService;
+    MovieCrewService movieCrewService;
+    MovieReviewService movieReviewService;
+    MovieImageService movieImageService;
 
     MovieMapper movieMapper;
+    CategoryMapper categoryMapper;
 
     public List<MoviePreviewResponse> getTrendingMoviePreviews() {
         List<Movie> trendingMovies = movieRepository.findTrendingMovies(5);
@@ -44,36 +51,81 @@ public class MovieService {
     }
 
     public Page<MovieListItemResponse> getMovieListItems(Pageable pageable) {
-        Page<Movie> movies = movieRepository.findAll(pageable);
+        Page<Movie> movies = movieRepository.findAllSortByFinalScore(pageable);
+        return convertToPageItem(movies);
+    }
+
+    public Page<MovieListItemResponse> getNowShowingMovieListItems(Pageable pageable) {
+        Page<Movie> movies = movieRepository.findNowShowingSortByFinalScore(pageable);
+        return convertToPageItem(movies);
+    }
+
+    public Page<MovieListItemResponse> getUpComingMovieListItems(Pageable pageable) {
+        Page<Movie> movies = movieRepository.findUpComingSortByFinalScore(pageable);
+        return convertToPageItem(movies);
+    }
+
+    private Page<MovieListItemResponse> convertToPageItem(Page<Movie> movies) {
+        List<Long> movieIds = movies.getContent().stream().map(Movie::getId).toList();
+        Map<Long, MovieReviewStats> statsMap = movieReviewService.getMapStatsByMovieIds(movieIds);
+        Map<Long, List<Category>> categoriesMap = movieCategoryService.fetchCategoryByMovieIds(movieIds);
         return movies.map(
-                movieMapper::toMovieListItemResponse
+                movie -> {
+                    MovieListItemResponse response = movieMapper.toMovieListItemResponse(movie);
+                    MovieReviewStats stats = statsMap.get(response.getId());
+                    if (stats == null) {
+                        response.setAverageRating(0.0);
+                        response.setRatingCount((long)0);
+                    }
+                    else {
+                        response.setAverageRating(stats.getAverageRating());
+                        response.setRatingCount(stats.getCountRating());
+                    }
+                    List<Category> categories = categoriesMap.get(response.getId());
+                    if (categories != null) {
+                        response.setCategories(categoryMapper.toListCategoryResponse(categories));
+                    }
+                    return  response;
+                }
         );
     }
 
     public MovieDetailResponse getMovieDetailByMovieId(Long movieId) {
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new GeneralException(ResponseCode.MOVIE_NOT_FOUND));
-        List<PersonPreviewResponse> actors = personService.getActorPreviewsByMovieId(movieId);
-        List<PersonPreviewResponse> directors = personService.getDirectorPreviewsByMovieId(movieId);
-        List<CategoryResponse> categories = categoryService.getCategoriesByMovieId(movieId);
         MovieDetailResponse response = movieMapper.toMovieDetailResponse(movie);
-        response.setActors(actors);
-        response.setDirectors(directors);
-        response.setCategories(categories);
+        addToMovieDetailResponse(
+                response,
+                true,
+                true,
+                true,
+                true,
+                true
+        );
         return response;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional
-    public void createMovie(MovieCreationRequest request) {
+    public MovieDetailResponse createMovie(MovieCreationRequest request) {
         Movie movie = movieMapper.toMovie(request);
         movie.setOriginalLanguage(languageService.fetchLanguageById(request.getOriginalLanguageId()));
-        movie.setSubtitleLanguage(languageService.fetchLanguageById(request.getSubtitleLanguageId()));
         movie.setAgeRating(ageRatingService.fetchAgeRatingById(request.getAgeRatingId()));
         movie = movieRepository.save(movie);
         movieCategoryService.save(movie.getId(), request.getCategoryIds());
-        movieActorService.save(movie.getId(), request.getActorIds());
-        movieDirectorService.save(movie.getId(), request.getDirectorIds());
+        movieCastService.save(movie.getId(), request.getCast(), true);
+        movieCrewService.save(movie.getId(), request.getCrew());
+
+        MovieDetailResponse response = movieMapper.toMovieDetailResponse(movie);
+        addToMovieDetailResponse(
+                response,
+                true,
+                true,
+                true,
+                true,
+                true
+        );
+        return response;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -85,41 +137,60 @@ public class MovieService {
         if (request.getOriginalLanguageId() != null) {
             movie.setOriginalLanguage(languageService.fetchLanguageById(request.getOriginalLanguageId()));
         }
-        if (request.getSubtitleLanguageId() != null) {
-            movie.setSubtitleLanguage(languageService.fetchLanguageById(request.getSubtitleLanguageId()));
-        }
         if (request.getAgeRatingId() != null) {
             movie.setAgeRating(ageRatingService.fetchAgeRatingById(request.getAgeRatingId()));
         }
         movie = movieRepository.save(movie);
-        movieCategoryService.save(movie.getId(), request.getCategoryIds());
-        movieActorService.save(movie.getId(), request.getActorIds());
-        movieDirectorService.save(movie.getId(), request.getDirectorIds());
+
+        movieCategoryService.delete(movieId, request.getDeleteCategoryIds());
+        movieCategoryService.save(movie.getId(), request.getAddCategoryIds());
+
+        movieCastService.delete(movieId, request.getDeleteCast(), false);
+        movieCastService.update(movieId, request.getUpdateCast(), false);
+        movieCastService.save(movieId, request.getCreateCast(), true);
+
+        movieCrewService.delete(movieId, request.getDeleteCrew());
+        movieCrewService.update(movieId, request.getUpdateCrew());
+        movieCrewService.save(movieId, request.getCreateCrew());
+
         MovieDetailResponse response = movieMapper.toMovieDetailResponse(movie);
-        response.setCategories(categoryService.getCategoriesByIds(request.getCategoryIds()));
-        response.setActors(personService.getPersonPreviewsByIds(request.getActorIds()));
-        response.setDirectors(personService.getPersonPreviewsByIds(request.getDirectorIds()));
+        addToMovieDetailResponse(
+                response,
+                true,
+                true,
+                true,
+                true,
+                true
+        );
         return response;
     }
 
-    public void updateRatingAfterCreateReview(MovieReview review) {
-        Movie movie = review.getMovie();
-        movie.setAverageRating((movie.getAverageRating() * movie.getRatingCount() + review.getRating()) / (movie.getRatingCount() + 1));
-        movie.setRatingCount(movie.getRatingCount()+1);
-        movieRepository.save(movie);
-    }
-
-    public void updateRatingAfterUpdateReview(MovieReview oldReview, MovieReview newReview) {
-        Movie movie = oldReview.getMovie();
-        movie.setAverageRating((movie.getAverageRating() * movie.getRatingCount() - oldReview.getRating() + newReview.getRating()) / movie.getRatingCount());
-        movieRepository.save(movie);
-    }
-
-    public void updateRatingAfterDeleteReview(MovieReview review) {
-        Movie movie = review.getMovie();
-        movie.setAverageRating((movie.getAverageRating() * movie.getRatingCount() - review.getRating()) / (movie.getRatingCount() - 1));
-        movie.setRatingCount(movie.getRatingCount() - 1);
-        movieRepository.save(movie);
+    private void addToMovieDetailResponse(
+            MovieDetailResponse response,
+            boolean addStats,
+            boolean addCast,
+            boolean addCrew,
+            boolean addImages,
+            boolean addCategories
+    ) {
+        Long movieId = response.getId();
+        if (addStats) {
+            MovieReviewStats stats = movieReviewService.getStatsByMovieId(movieId);
+            response.setAverageRating(stats.getAverageRating());
+            response.setRatingCount(stats.getCountRating());
+        }
+        if (addCast) {
+            response.setCast(movieCastService.getCastByMovieId(movieId, PageRequest.of(0, 10)));
+        }
+        if (addCrew) {
+            response.setCrew(movieCrewService.getCrewByMovieId(movieId, PageRequest.of(0, 10)));
+        }
+        if (addImages) {
+            response.setImages(movieImageService.getMovieImageByMovieId(movieId, PageRequest.of(0, 5)));
+        }
+        if (addCategories) {
+            response.setCategories(categoryService.getCategoriesByMovieId(movieId));
+        }
     }
 
     public boolean existsByMovieId(Long movieId) {
@@ -129,6 +200,17 @@ public class MovieService {
     public Movie fetchByMovieId(Long movieId) {
         return movieRepository.findById(movieId)
                 .orElseThrow(() -> new GeneralException(ResponseCode.MOVIE_NOT_FOUND));
+    }
+
+
+    public List<Long> fetchMovieIdsByListIds(List<Long> ids) {
+        return movieRepository.findIdsByListIds(ids);
+    }
+
+    public MovieBannerResponse getMovieBanner(Long movieId) {
+        return movieMapper.toMovieBannerResponse(
+                movieRepository.findById(movieId).orElseThrow(() -> new GeneralException(ResponseCode.MOVIE_NOT_FOUND))
+        );
     }
 
 }

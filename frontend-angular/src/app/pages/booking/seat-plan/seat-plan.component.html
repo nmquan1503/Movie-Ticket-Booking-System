@@ -1,0 +1,42 @@
+<div class="screen-area">
+    <div class="screen-title">Screen</div>
+    <div class="screen-icon-wrapper">
+        <img src="/assets/images/icons/screen-thumb.png" />
+    </div>
+</div>
+<div class="seat-area">
+    <div 
+        class="seats-bound" 
+        [style.width]="columnCount * 40 + 'px'"
+        [style.height]="rowCount * 40 + 'px'"    
+    >
+        <div
+            *ngFor="let seat of seats"
+            class="seat-wrapper"
+            [style.left]="seat.positionX * 40 + 'px'"
+            [style.top]="seat.positionY * 40 + 'px'"
+            [style.background-color]="getSeatColor(seat)"
+            [class.hoverable]="isHoverable(seat.id)"
+            (click)="chooseSeat(seat)"
+        >
+            <img src="assets/images/icons/seat01.png" />
+            <span>{{ seat.name }}</span>
+        </div>
+    </div>
+</div>
+<div class="seat-note">
+    <div class="note-bound">
+        <div
+            *ngFor="let item of seatColorMap | keyvalue"
+            class="note-wrapper"
+        >
+            <div 
+                class="ex" 
+                [style.background-color]="item.value"
+            >
+                <img src="assets/images/icons/seat01.png" />
+            </div>
+            <span>{{ item.key }}</span>
+        </div>
+    </div>
+</div>

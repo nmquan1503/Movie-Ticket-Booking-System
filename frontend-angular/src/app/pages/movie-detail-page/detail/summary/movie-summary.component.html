@@ -1,0 +1,49 @@
+<div class="movie-summary" [class.active]="isVisible">
+    <div *ngIf="movie.overview" class="info-section">
+        <div class="title">Tóm tắt phim</div>
+        <p>{{ movie.overview }}</p>
+    </div>
+    <div class="info-section">
+        <div class="title">Diễn viên tham gia</div>
+        <div class="container">
+            <div
+                *ngFor="let cast_mem of cast"
+                class="person-card"
+            >
+                <div class="avatar-wrapper">
+                    <img *ngIf="cast_mem.person.avatarURL" [src]="cast_mem.person.avatarURL" />
+                    <img *ngIf="!cast_mem.person.avatarURL" src="/assets/images/placeholders/default-avatar.png" />
+                </div>
+                <p class="name">{{ cast_mem.person.name }}</p>
+                <p class="character">{{ cast_mem.character }}</p>
+            </div>
+        </div>
+        <load-button 
+            [isLoading]="isLoadingCast" 
+            [isLastPage]="isLastPageCast" 
+            [action]="loadCast.bind(this)"
+        ></load-button>
+    </div>
+    <div class="info-section">
+        <div class="title">Đội ngũ sản xuất</div>
+        <div class="container">
+            <div
+                *ngFor="let crew_mem of crew"
+                class="person-card"
+            >
+                <div class="avatar-wrapper">
+                    <img *ngIf="crew_mem.person.avatarURL" [src]="crew_mem.person.avatarURL" />
+                    <img *ngIf="!crew_mem.person.avatarURL" src="/assets/images/placeholders/default-avatar.png" />
+                </div>
+                <p class="name">{{ crew_mem.person.name }}</p>
+                <p class="department">{{ crew_mem.position.department.name }}</p>
+                <p class="position">{{ crew_mem.position.name }}</p>
+            </div>
+        </div>
+        <load-button 
+            [isLoading]="isLoadingCrew" 
+            [isLastPage]="isLastPageCrew" 
+            [action]="loadCrew.bind(this)"
+        ></load-button>
+    </div>
+</div>

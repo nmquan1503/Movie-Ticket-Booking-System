@@ -11,4 +11,8 @@ public interface ShowtimeRepository extends JpaRepository<Showtime, Long>, Custo
 
     List<Showtime> findByMovieIdAndStartTimeBetween(Long movieId, LocalDateTime from, LocalDateTime to);
 
+    List<Showtime> findByMovieIdAndStartTimeGreaterThanEqual(Long movieId, LocalDateTime from);
+
+    List<Showtime> findByMovieIdAndStartTimeGreaterThanEqualAndStartTimeLessThan(Long movieId, LocalDateTime from, LocalDateTime to);
+
 }

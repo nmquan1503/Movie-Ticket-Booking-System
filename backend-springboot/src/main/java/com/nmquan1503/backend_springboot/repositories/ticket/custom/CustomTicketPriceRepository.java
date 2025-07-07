@@ -4,6 +4,6 @@ import java.time.LocalDateTime;
 
 public interface CustomTicketPriceRepository {
 
-    Double findPriceByRoomTypeIdAndSeatTypeIdAndStartTime(Byte roomTypeId, Byte seatTypeId, LocalDateTime startTime);
+    double findCurrentTicketPrice();
 
 }
